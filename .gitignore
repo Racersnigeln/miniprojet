@@ -1,3 +1,7 @@
+# Custom ignores
+
+Jean-Bot
+
 # Created by https://www.toptal.com/developers/gitignore/api/latex,linux,c
 # Edit at https://www.toptal.com/developers/gitignore?templates=latex,linux,c
 
@@ -378,5 +382,22 @@ TSWLatexianTemp*
 
 # .nfs files are created when an open file is removed but is still being accessed
 .nfs*
+
+### CMake ###
+CMakeLists.txt.user
+CMakeCache.txt
+CMakeFiles
+CMakeScripts
+Testing
+Makefile
+cmake_install.cmake
+install_manifest.txt
+compile_commands.json
+CTestTestfile.cmake
+_deps
+
+### CMake Patch ###
+# External projects
+*-prefix/
 
 # End of https://www.toptal.com/developers/gitignore/api/latex,linux,c
