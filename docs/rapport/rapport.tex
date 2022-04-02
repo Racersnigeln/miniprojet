@@ -1,0 +1,65 @@
+\documentclass{article}
+\usepackage[a4paper, margin=2.5cm, headheight=13pt]{geometry}
+\usepackage[french]{babel}
+\usepackage{fancyhdr}
+\usepackage{tikz}
+\usetikzlibrary{calc}
+\usepackage{graphicx}
+
+% Définir la pagination et.c.
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{MICRO-315 Miniprojet} 
+\rhead{Les aventures de Jean-Bot}
+\fancyfoot
+{
+    \begin{tikzpicture}[remember picture,overlay]
+            \node[] (chat) at ($(current page.south)+(0,1.5)$) {\includegraphics[width=1cm]{images/amour.eps}};
+            \node[] () at ($(chat)+(0,0.04)$) {\thepage};
+            \node[] () at ($(chat)-(1,0)$) {\includegraphics[width=1cm]{images/kawwai.eps}};
+            \node[] () at ($(chat)+(1,0)$) {\scalebox{-1}[1]{\includegraphics[width=1cm]{images/kawwai.eps}}};
+    \end{tikzpicture}
+}
+
+\begin{document}
+    \begin{titlepage}
+        \vspace*{\fill}
+        \begin{center}
+            \textbf{\large MICRO-315 Miniprojet}
+            \vspace{2.5cm}
+            
+            \begin{tikzpicture}[remember picture,overlay]
+                \node (titre) at (0,0)
+                    {
+                        \begin{tabular}{c}
+                            \hline
+                            \\
+                            \huge\it Les aventures incroyables de \\
+                            \\
+                            \Huge\bf Jean-Bot I Baptiste\\
+                            \\
+                            \huge\it Le raccourceur des circuits\\
+                            \\
+                            \hline
+                        \end{tabular}
+                    };
+                \node[left]  at (titre.west) {\includegraphics[width=5cm]{images/kawwai.eps}};
+                \node[right] at (titre.east) {\scalebox{-1}[1]{\includegraphics[width=5cm]{images/kawwai.eps}}};
+            \end{tikzpicture}
+
+            \vspace{3cm} 
+            \textit{\large Un projet de robotique de Julian Donevsky et Olof Lissmats}
+        \end{center}
+        \vspace{5cm}
+        \vspace*{\fill}
+    \end{titlepage}
+
+    \thispagestyle{empty}
+    \tableofcontents
+
+    \newpage
+    \setcounter{page}{1}
+
+    \section{Introduction}
+    Dans ce projet on a aidé notre cher ami Jean-Bot de développer ces compétences de danse, chanson et géographie.
+\end{document}
