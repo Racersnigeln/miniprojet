@@ -14,10 +14,10 @@
 \fancyfoot
 {
     \begin{tikzpicture}[remember picture,overlay]
-            \node[] (chat) at ($(current page.south)+(0,1.5)$) {\includegraphics[width=1cm]{images/amour.eps}};
+            \node[] (chat) at ($(current page.south)+(0,1.5)$) {\includegraphics[width=1cm]{images/amour.pdf}};
             \node[] () at ($(chat)+(0,0.04)$) {\thepage};
-            \node[] () at ($(chat)-(1,0)$) {\includegraphics[width=1cm]{images/kawwai.eps}};
-            \node[] () at ($(chat)+(1,0)$) {\scalebox{-1}[1]{\includegraphics[width=1cm]{images/kawwai.eps}}};
+            \node[] () at ($(chat)-(1,0)$) {\includegraphics[width=1cm]{images/kawwai.pdf}};
+            \node[] () at ($(chat)+(1,0)$) {\scalebox{-1}[1]{\includegraphics[width=1cm]{images/kawwai.pdf}}};
     \end{tikzpicture}
 }
 
@@ -25,10 +25,9 @@
     \begin{titlepage}
         \vspace*{\fill}
         \begin{center}
-            \textbf{\large MICRO-315 Miniprojet}
-            \vspace{2.5cm}
-            
-            \begin{tikzpicture}[remember picture,overlay]
+            \begin{tikzpicture}[remember picture, overlay]
+                \node[] at (current page.center) {\includegraphics[angle=90, width=\paperwidth]{images/background.jpg}};
+                \fill[color = white, opacity = 0.9, rounded corners = 2ex] (-10,5) rectangle (10,-5);
                 \node (titre) at (0,0)
                     {
                         \begin{tabular}{c}
@@ -43,23 +42,25 @@
                             \hline
                         \end{tabular}
                     };
-                \node[left]  at (titre.west) {\includegraphics[width=5cm]{images/kawwai.eps}};
-                \node[right] at (titre.east) {\scalebox{-1}[1]{\includegraphics[width=5cm]{images/kawwai.eps}}};
+                \node[left]  at (titre.west) {\includegraphics[width=5cm]{images/kawwai.pdf}};
+                \node[right] at (titre.east) {\scalebox{-1}[1]{\includegraphics[width=5cm]{images/kawwai.pdf}}};
+                \node[above] at (titre.north) {\textbf{\large MICRO-315 Miniprojet}};
+                \node[below] at (titre.south) {\textit{\large Un projet de robotique de Julian Donevsky et Olof Lissmats}};
             \end{tikzpicture}
-
-            \vspace{3cm} 
-            \textit{\large Un projet de robotique de Julian Donevsky et Olof Lissmats}
         \end{center}
         \vspace{5cm}
         \vspace*{\fill}
     \end{titlepage}
 
     \thispagestyle{empty}
+
     \tableofcontents
 
     \newpage
+
     \setcounter{page}{1}
 
     \section{Introduction}
+
     Dans ce projet on a aidé notre cher ami Jean-Bot de développer ces compétences de danse, chanson et géographie.
 \end{document}
