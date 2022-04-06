@@ -1,8 +1,11 @@
 #include <stdint.h>
-#include <stdio.h>
+#include <selector.h>
 
-uint8_t main()
+void __stack_chk_fail(void){}
+void __stack_chk_guard(void){}
+
+int main(void)
 {
-    uint8_t integer = 8;
-    printf("Mon nombre entier préféré est %d ! <3\n", integer);
+	uint8_t sel = get_selector();
+    return sel;
 }
