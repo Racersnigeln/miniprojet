@@ -1,20 +1,18 @@
-PROJECT = Jean-Bot
-#  
-# CC 	= arm-none-eabi-gcc
-# CCFLAGS = -Wall
-# OBJS 	=
-# LIB 	:= -L ../lib/e-puck_main-processor/src -I ../lib/e-puck_main-processor/src
-# 
-# main: $(OBJS) main.o
-# 	$(CC) $^ -o Jean-Bot $(LIB)
-# 
-# clean:
-# 	\rm $(OBJS) main.o Jean-Bot
 
+#This is a template to build your own project with the e-puck2_main-processor folder as a library.
+#Simply adapt the lines below to be able to compile
+
+# Define project name here
+PROJECT = Jean-Bot
+
+#Define path to the e-puck2_main-processor folder
+GLOBAL_PATH = ../lib/e-puck2_main-processor
+
+#Source files to include
 CSRC += ./main.c
 
-INCDIR +=
+#Header folders to include
+INCDIR += 
 
-GLOBAL_PATH = ../lib/e-puck2_main-processor
+#Jump to the main Makefile
 include $(GLOBAL_PATH)/Makefile
-
