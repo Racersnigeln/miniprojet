@@ -1,10 +1,6 @@
-#include "ch.h"
-#include "hal.h"
-#include <chprintf.h>
-#include <usbcfg.h>
-
 #include <main.h>
 #include <motors.h>
+#include <process_image.h>
 
 void rotate_left(void)
 {
@@ -24,4 +20,9 @@ void advance(void)
 void reverse(void)
 {
     return;
+}
+
+void dance(flag country)
+{
+	return;
 }

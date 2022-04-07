@@ -1,4 +1,3 @@
-#include "ch.h"
 #include "hal.h"
 #include <chprintf.h>
 #include <usbcfg.h>
@@ -143,6 +142,11 @@ static THD_FUNCTION(ProcessImage, arg) {
 			image[i/2] = (uint8_t)img_buff_ptr[i]&0xF8;
 		}
     }
+}
+
+flag get_flag(void)
+{
+	return UNDEFINED;
 }
 
 void process_image_start(void){
