@@ -150,7 +150,7 @@ void process_image_start(void){
 	chThdCreateStatic(waCaptureImage, sizeof(waCaptureImage), NORMALPRIO, CaptureImage, NULL);
 }
 
-flag get_flag(void)
+Flag get_flag(void)
 {
 	return UNDEFINED;
 }

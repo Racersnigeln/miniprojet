@@ -20,11 +20,15 @@ static THD_FUNCTION(ManageStates, arg)
 
 	static Flag country = UNDEFINED;
 
+    int selector = get_selector();
+
     while(1)
     {
-        if (get_selector() == 0)
+        if (get_selector() != selector)
         {
+            selector = get_selector();
             ROBOT_STATE = FLAG_DETECTION;
+            change_figure();
         }
         if (ROBOT_STATE == FLAG_DETECTION)
         {

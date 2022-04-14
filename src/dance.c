@@ -3,14 +3,17 @@
 #include <process_image.h>
 #include <audio/play_melody.h>
 
-
 #define MUSIC_SIZE 50
 #define NUMBER_OF_SONG 1
 
-struct Music {
+// Speed of movement in cm/s when dancing
+#define DANCE_SPEED 4
+#define SPEED_TO_STEPS 1000/13
+
+typedef struct {
   uint16_t rythme [MUSIC_SIZE] ;
   uint16_t note [MUSIC_SIZE] ;
-}; 
+} Music; 
 
 static uint16_t music_position = 0;
 static Music current_song;
@@ -68,6 +71,10 @@ void change_figure(void)
     }
 }
 
+void restart_dance(Flag country)
+{
+    return;
+}
 
 static THD_WORKING_AREA(waDance, 256);  //increase priority
 static THD_FUNCTION(Dance, arg)
@@ -83,7 +90,7 @@ static THD_FUNCTION(Dance, arg)
         if (is_dancing)
         {
             time = chVTGetSystemTime();
-            Play_Note (current_song.note[music_position], current_song.rythme[music_position]);
+            playNote (current_song.note[music_position], current_song.rythme[music_position]);
             change_figure();
         
             chThdSleepUntilWindowed(time , time + current_song.rythme[music_position]);
