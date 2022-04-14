@@ -6,6 +6,7 @@
 #include <dance.h>
 #include <process_image.h>
 #include <button.h>
+#include <selector.h>
 
 static enum {WAIT, FLAG_DETECTION, DANCE} ROBOT_STATE;
 
@@ -17,14 +18,13 @@ static THD_FUNCTION(ManageStates, arg)
 
     ROBOT_STATE = WAIT;
 
+	static Flag country = UNDEFINED;
+
     while(1)
     {
-    	flag country = UNDEFINED;
-
-        if (button_is_pressed())
+        if (get_selector() == 0)
         {
             ROBOT_STATE = FLAG_DETECTION;
-        	chprintf((BaseSequentialStream *)&SDU1, "Bouton! <3\n");
         }
         if (ROBOT_STATE == FLAG_DETECTION)
         {
@@ -33,9 +33,10 @@ static THD_FUNCTION(ManageStates, arg)
         }
         if (ROBOT_STATE == DANCE)
         {
-        	dance(country);
+            restart_dance(country);
         	ROBOT_STATE = WAIT;
         }
+        chThdSleep(100);     //(ms) a changer ?
     }
 }
 

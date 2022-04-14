@@ -1,4 +1,7 @@
-
+// #include <stdio.h>
+// #include <stdlib.h>
+// #include <string.h>
+// #include <math.h>
 
 #include "ch.h"
 #include "hal.h"
@@ -10,7 +13,6 @@
 #include <chprintf.h>
 
 #include <process_image.h>
-#include <music.h>
 #include <dance.h>
 #include <obstacle.h>
 #include <state.h>
@@ -46,12 +48,14 @@ int main(void)
 
 	//stars the thread for the processing of the image
 	process_image_start();
-	start_state();
 
+    // start the thread for update state
+    start_dance();
+    start_state();
+    
     /* Infinite loop. */
     while (1) {
     	//waits 1 second
-//    	chprintf((BaseSequentialStream *)&SDU1, "Bouton! <3\n");
         chThdSleepMilliseconds(1000);
     }
 }

@@ -1,3 +1,4 @@
+#include "ch.h"
 #include "hal.h"
 #include <chprintf.h>
 #include <usbcfg.h>
@@ -144,12 +145,12 @@ static THD_FUNCTION(ProcessImage, arg) {
     }
 }
 
-flag get_flag(void)
-{
-	return UNDEFINED;
-}
-
 void process_image_start(void){
 	chThdCreateStatic(waProcessImage, sizeof(waProcessImage), NORMALPRIO, ProcessImage, NULL);
 	chThdCreateStatic(waCaptureImage, sizeof(waCaptureImage), NORMALPRIO, CaptureImage, NULL);
+}
+
+flag get_flag(void)
+{
+	return UNDEFINED;
 }
