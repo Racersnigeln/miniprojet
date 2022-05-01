@@ -25,9 +25,14 @@ Music TEST (void)
 {
     Music song = {{100},{0}} ;
 
-    song.rythm [0] = 500;
+    song.rythm [0] = 1000;
     song.rythm [1] = 1000;
-    song.rythm [2] = 1000;
+    song.rythm [2] = 500;
+    song.rythm [3] = 500;
+    song.rythm [4] = 5000;
+    song.rythm [5] = 5000;
+    song.rythm [6] = 100;
+    song.rythm [7] = 100;
 
     song.notes [0] = NOTE_G3;
     song.notes [1] = NOTE_A3;

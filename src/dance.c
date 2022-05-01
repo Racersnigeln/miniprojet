@@ -104,9 +104,9 @@ static THD_FUNCTION(Dance, arg)
         {
             chprintf((BaseSequentialStream *)&SD3, "DANSE");
             time = chVTGetSystemTime();
-            playNote (current_song.notes[music_position], current_song.rythm[music_position]);
-            change_figure();
-        
+//            playNote (current_song.notes[music_position], current_song.rythm[music_position]);
+//            change_figure();
+
             chThdSleepUntilWindowed(time, time + current_song.rythm[music_position]);
             ++music_position;
 

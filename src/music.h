@@ -1,7 +1,7 @@
 #ifndef MUSIC_H
 #define MUSIC_H
 
-#define MUSIC_SIZE 3  //attention a changer
+#define MUSIC_SIZE 8  //attention a changer
 
 typedef struct {
   uint16_t rythm [MUSIC_SIZE] ;     //en ms
