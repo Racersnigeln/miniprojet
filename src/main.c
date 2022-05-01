@@ -38,6 +38,7 @@ CONDVAR_DECL(bus_condvar);
 int main(void)
 {
 	//HELLO JE SUIS LA NOUVELLE VERSION
+	// Ce commentaire est meilleur
 
     /** Inits the Inter Process Communication bus. */
     messagebus_init(&bus, &bus_lock, &bus_condvar);
