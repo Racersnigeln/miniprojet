@@ -13,6 +13,8 @@ CSRC += ./main.c \
 		./state.c \
 		./dance.c \
 		./process_image.c \
+		./obstacle.c \
+		./music.c \
 
 #Header folders to include
 INCDIR += 

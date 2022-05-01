@@ -1,22 +1,27 @@
+#include "ch.h"
+#include "hal.h"
+#include <chprintf.h>
+#include <usbcfg.h>
+
 #include <main.h>
 #include <motors.h>
 #include <process_image.h>
+#include <state.h>
 #include <audio/play_melody.h>
+#include <music.h>
 
-#define MUSIC_SIZE 50
+#include <dance.h>
+
+
 #define NUMBER_OF_SONG 1
 
 // Speed of movement in cm/s when dancing
 #define DANCE_SPEED 4
 #define SPEED_TO_STEPS 1000/13
 
-typedef struct {
-  uint16_t rythme [MUSIC_SIZE] ;
-  uint16_t note [MUSIC_SIZE] ;
-} Music; 
 
 static uint16_t music_position = 0;
-static Music current_song;
+static Music current_song ;
 static bool is_dancing = false ;
 
 
@@ -71,12 +76,16 @@ void change_figure(void)
     }
 }
 
+
 void restart_dance(Flag country)
 {
-    return;
+    music_position = 0;
+    //current_song = LUT_flag_to_music (country); 
+    current_song = TEST();
+    is_dancing = TRUE;
 }
 
-static THD_WORKING_AREA(waDance, 256);  //increase priority
+static THD_WORKING_AREA(waDance, 2048);  //increase priority
 static THD_FUNCTION(Dance, arg)
 {
     chRegSetThreadName(__FUNCTION__);
@@ -84,16 +93,21 @@ static THD_FUNCTION(Dance, arg)
 
     systime_t time;
 
+    //////
+    current_song = TEST();
+    //////
+
     while(1)
     {
-        //ajouter detection obstacle -> finish dance
-        if (is_dancing)
+        //if ( (is_dancing) & (get_robot_state() != PAUSE) )
+        if (1)
         {
+            chprintf((BaseSequentialStream *)&SD3, "DANSE");
             time = chVTGetSystemTime();
-            playNote (current_song.note[music_position], current_song.rythme[music_position]);
+            playNote (current_song.notes[music_position], current_song.rythm[music_position]);
             change_figure();
         
-            chThdSleepUntilWindowed(time , time + current_song.rythme[music_position]);
+            chThdSleepUntilWindowed(time, time + current_song.rythm[music_position]);
             ++music_position;
 
             if (music_position >= MUSIC_SIZE)
@@ -102,8 +116,11 @@ static THD_FUNCTION(Dance, arg)
                 music_position = 0;
                 // allumer des LEDS pour montrer qu on a fini ? coder une fonction finish_dance ?
             }
+            // L ERREUR VIENT DE LA, A COMMENTER PUIS DEBUGGUER
 
-        } else {
+        } 
+        else 
+        {
             chThdSleep(100);     //(ms) a changer ?
         }
     }

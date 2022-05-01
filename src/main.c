@@ -6,11 +6,13 @@
 #include "ch.h"
 #include "hal.h"
 #include "memory_protection.h"
+// #include <messagebus.h>
 #include <usbcfg.h>
 #include <main.h>
 #include <motors.h>
 #include <camera/po8030.h>
 #include <chprintf.h>
+#include <sensors/proximity.h>
 
 #include <process_image.h>
 #include <dance.h>
@@ -29,8 +31,14 @@ static void serial_start(void)
 	sdStart(&SD3, &ser_cfg); // UART3.
 }
 
+messagebus_t bus;
+MUTEX_DECL(bus_lock);
+CONDVAR_DECL(bus_condvar);
+
 int main(void)
 {
+    /** Inits the Inter Process Communication bus. */
+    messagebus_init(&bus, &bus_lock, &bus_condvar);
 
     halInit();
     chSysInit();
@@ -46,7 +54,11 @@ int main(void)
 	//init the motors
 	motors_init();
 
-	//stars the thread for the processing of the image
+    // init the proximity sensors
+    proximity_start();
+    calibrate_ir();
+
+	//start the thread for the processing of the image
 	process_image_start();
 
     // start the thread for update state
