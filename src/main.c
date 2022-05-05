@@ -13,8 +13,9 @@
 #include <camera/po8030.h>
 #include <chprintf.h>
 #include <sensors/proximity.h>
+#include <audio/audio_thread.h>
 
-#include <process_image.h>
+#include <flag_detection.h>
 #include <dance.h>
 #include <obstacle.h>
 #include <state.h>
@@ -37,10 +38,7 @@ CONDVAR_DECL(bus_condvar);
 
 int main(void)
 {
-	//HELLO JE SUIS LA NOUVELLE VERSION
-	// Ce commentaire est meilleur
-
-    /** Inits the Inter Process Communication bus. */
+    // Init bus for IR-sensors
     messagebus_init(&bus, &bus_lock, &bus_condvar);
 
     halInit();
@@ -49,24 +47,27 @@ int main(void)
 
     //start the serial communication
     serial_start();
+
     //start the USB communication
     usb_start();
-    //start the camera
-    dcmi_start();
-	po8030_start();
-	//init the motors
+
+    init_camera();
+
 	motors_init();
+
+    //inti sound
+    dac_start();
 
     // init the proximity sensors
     proximity_start();
     calibrate_ir();
 
-	//start the thread for the processing of the image
-	process_image_start();
+    // start the thread for dance
+    start_dance();
 
     // start the thread for update state
-    start_dance();
     start_state();
+
     
     /* Infinite loop. */
     while (1) {

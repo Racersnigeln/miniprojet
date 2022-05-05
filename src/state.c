@@ -5,7 +5,7 @@
 
 #include <main.h>
 #include <dance.h>
-#include <process_image.h>
+#include <flag_detection.h>
 #include <obstacle.h>
 #include <button.h>
 #include <selector.h>
@@ -15,21 +15,19 @@
 
 static State ROBOT_STATE = WAIT; 
 
-static THD_WORKING_AREA(waManageStates, 256);
+static THD_WORKING_AREA(waManageStates, 1024);
 static THD_FUNCTION(ManageStates, arg)
 {
     chRegSetThreadName(__FUNCTION__);
     (void)arg;
 
-    //ROBOT_STATE = WAIT;
-
-	static Flag country = UNDEFINED;    //type Flag defined in process_image.h
+	static Flag country = UNDEFINED_FLAG
+    ;    //type Flag defined in process_image.h
 
     int selector = get_selector();
 
     while(1)
     {
-        // chprintf((BaseSequentialStream *)&SD3, "ManageState\n");
         if ( obstacle_detected() )
         {
             ROBOT_STATE = PAUSE;
@@ -41,16 +39,18 @@ static THD_FUNCTION(ManageStates, arg)
             {
                 selector = get_selector();
                 ROBOT_STATE = FLAG_DETECTION;
-                change_figure();
             }
             if ( ROBOT_STATE == FLAG_DETECTION )
             {
+                set_body_led(1);
+                chThdSleep(1000);
+                set_body_led(0);
                 country = get_flag();
-                ROBOT_STATE = (country == UNDEFINED) ? WAIT : DANCE;
+                ROBOT_STATE = (country == UNDEFINED_FLAG) ? WAIT : DANCE;
             }
             if ( ROBOT_STATE == DANCE )
             {
-                restart_dance(country);
+                restart_dance(ITALY);
                 ROBOT_STATE = WAIT;
             }
         }

@@ -10,7 +10,7 @@
 
 //semaphore
 static BSEMAPHORE_DECL(image_ready_sem, TRUE);
-static enum {RED, WHITE, BLUE} color;
+
 
 
 /*
@@ -114,7 +114,7 @@ static THD_FUNCTION(CaptureImage, arg) {
         //starts a capture
 		dcmi_capture_start();
 		//waits for the capture to be done
-		wait_image_ready();
+		wait_image_ready(); 
 		//signals an image has been captured
 		chBSemSignal(&image_ready_sem);
     }
@@ -128,7 +128,7 @@ static THD_FUNCTION(ProcessImage, arg) {
     (void)arg;
 
 	uint8_t *img_buff_ptr;
-	uint8_t image[IMAGE_BUFFER_SIZE] = {0};
+	uint8_t image [IMAGE_BUFFER_SIZE] = {0};
 
     while(1){
     	//waits until an image has been captured
@@ -150,7 +150,3 @@ void process_image_start(void){
 	chThdCreateStatic(waCaptureImage, sizeof(waCaptureImage), NORMALPRIO, CaptureImage, NULL);
 }
 
-Flag get_flag(void)
-{
-	return UNDEFINED;
-}

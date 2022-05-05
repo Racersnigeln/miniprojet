@@ -1,17 +1,29 @@
 #ifndef MUSIC_H
 #define MUSIC_H
 
-#define MUSIC_SIZE 8  //attention a changer
+#define NOTE_TO_MS 15000    // nbr_second_in_one_minute/NOIRE => 60000/4 
+
+#define SILENCE 0
+
+#define DOUBLE_CROCHE 1
+#define CROCHE 2 
+#define CROCHE_POINTEE 3
+#define NOIRE 4
+#define NOIRE_POINTEE 6
+#define BLANCHE 8
+#define RONDE 16
+
+#define MUSIC_SIZE 55
 
 typedef struct {
   uint16_t rythm [MUSIC_SIZE] ;     //en ms
-  uint16_t notes [MUSIC_SIZE] ;     //en note (voir play_melody.h)
+  uint16_t notes [MUSIC_SIZE] ;     //en freq (voir play_melody.h pour les notes)
 } Music; 
 
 Music NO_MUSIC (void);
 
 Music MARSEILLAISE (void);
 
-Music TEST (void) ;
+Music BELLA_CIAO (void) ;
 
 #endif /*   MUSIC_H */

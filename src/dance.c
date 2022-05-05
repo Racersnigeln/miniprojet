@@ -3,15 +3,17 @@
 #include <chprintf.h>
 #include <usbcfg.h>
 
+#include <time.h>
+
 #include <main.h>
 #include <motors.h>
-#include <process_image.h>
+#include <audio/audio_thread.h>
+#include <flag_detection.h>
 #include <state.h>
 #include <audio/play_melody.h>
 #include <music.h>
 
 #include <dance.h>
-
 
 #define NUMBER_OF_SONG 1
 
@@ -21,8 +23,8 @@
 
 
 static uint16_t music_position = 0;
-static Music current_song ;
-static bool is_dancing = false ;
+static Music current_song;
+static bool is_dancing = false;
 
 
 void advance(void)
@@ -49,7 +51,7 @@ void rotate_right(void)
     right_motor_set_speed(-DANCE_SPEED*SPEED_TO_STEPS);
 }
 
-void stop(void)
+void dance_stop(void)
 {
     left_motor_set_speed(0);
     right_motor_set_speed(0);
@@ -57,7 +59,7 @@ void stop(void)
 
 void change_figure(void)
 {
-    int r = rand() % 4;
+    uint8_t r = rand() % 4;
     if (r == 0)
     {
         advance();
@@ -76,16 +78,30 @@ void change_figure(void)
     }
 }
 
+Music LUT_flag_to_music (Flag country) 
+{
+    if (country == UNDEFINED_FLAG)
+    {
+        return NO_MUSIC();
+    }
+    else if (country == FRANCE)
+    {
+        return MARSEILLAISE();
+    }
+    else if (country == ITALY)
+    {
+        return BELLA_CIAO();
+    }
+}
 
 void restart_dance(Flag country)
 {
     music_position = 0;
-    //current_song = LUT_flag_to_music (country); 
-    current_song = TEST();
-    is_dancing = TRUE;
+    current_song = LUT_flag_to_music(country); 
+    is_dancing = true;
 }
 
-static THD_WORKING_AREA(waDance, 2048);  //increase priority
+static THD_WORKING_AREA(waDance, 2048);
 static THD_FUNCTION(Dance, arg)
 {
     chRegSetThreadName(__FUNCTION__);
@@ -93,40 +109,54 @@ static THD_FUNCTION(Dance, arg)
 
     systime_t time;
 
-    //////
-    current_song = TEST();
-    //////
+    // Small offset time to separate notes
+    systime_t note_offset = 20 ;    
 
     while(1)
     {
-        //if ( (is_dancing) & (get_robot_state() != PAUSE) )
-        if (1)
+        if ( (is_dancing) & (get_robot_state() != PAUSE) )
         {
-            chprintf((BaseSequentialStream *)&SD3, "DANSE");
             time = chVTGetSystemTime();
-//            playNote (current_song.notes[music_position], current_song.rythm[music_position]);
-//            change_figure();
 
-            chThdSleepUntilWindowed(time, time + current_song.rythm[music_position]);
-            ++music_position;
+            if (current_song.notes[music_position] != 0)
+            {
+                // Play next tone and do new dance step
+                dac_play(current_song.notes[music_position]);
+                change_figure();
+            } 
+            else 
+            {
+                // Stop singing and dancing
+                dac_stop();
+                dance_stop();
+            }
+
+            if (current_song.rythm[music_position] > note_offset)
+            {
+                chThdSleepUntilWindowed(time, 
+                    time + current_song.rythm[music_position] - note_offset);
+                dac_stop();
+                chThdSleep(note_offset);
+            }
+
+            music_position++;
 
             if (music_position >= MUSIC_SIZE)
             {
                 is_dancing = false;
                 music_position = 0;
-                // allumer des LEDS pour montrer qu on a fini ? coder une fonction finish_dance ?
+                dance_stop();
+                dac_stop();
             }
-            // L ERREUR VIENT DE LA, A COMMENTER PUIS DEBUGGUER
-
         } 
         else 
         {
-            chThdSleep(100);     //(ms) a changer ?
+            chThdSleep(100);
         }
     }
 }
 
 void start_dance(void)
 {
-	chThdCreateStatic(waDance, sizeof(waDance), NORMALPRIO + 1, Dance, NULL); //increase priority
+	chThdCreateStatic(waDance, sizeof(waDance), NORMALPRIO+10, Dance, NULL);
 }

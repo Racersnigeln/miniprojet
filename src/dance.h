@@ -2,7 +2,7 @@
 #define DANCE_H
 
 // Get access to the type Flag
-#include <process_image.h>
+#include <flag_detection.h>
 #include <music.h>
 
 Music LUT_flag_to_music (Flag country);

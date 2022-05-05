@@ -12,7 +12,7 @@ GLOBAL_PATH = ../lib/e-puck2_main-processor
 CSRC += ./main.c \
 		./state.c \
 		./dance.c \
-		./process_image.c \
+		./flag_detection.c \
 		./obstacle.c \
 		./music.c \
 
