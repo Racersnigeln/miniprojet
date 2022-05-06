@@ -12,10 +12,15 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+
+//constant for the function get_color
 #define RED_THRESHOLD   0
 #define GREEN_THRESHOLD 0
 #define BLUE_THRESHOLD  0
 
+//constant for the function extract_color_bands
+#define MIN_GROUP_SIZE 20
+#define MAX_FUSION_GROUPS 20
 
 void init_camera(void)
 {
@@ -76,6 +81,62 @@ Color get_color(uint16_t pixel)
 void extract_color_bands(Color* color_bands, uint8_t color_line [MAX_NUM_COLOR_BANDS])
 {
 	//note: ajouter (uint_16t) devant colors_bands quand on l utilise comme dans page 2 corrige tp4
+
+	//step 1: split the color_line into 2 that give the groups of colors and the size of each group
+	Color color_groups [IMAGE_BUFFER_SIZE] = {UNDEFINED_COLOR};
+	uint16_t size_of_groups [IMAGE_BUFFER_SIZE] = {0};
+
+//allocation dynamique ??? demander assistant. comme ça ? :
+//	Color* color_groups = {UNDEFINED_COLOR};
+//	uint16_t* size_of_groups = {0};
+
+	uint16_t ptr_color_groups = 0;
+	Color current_color = color_line[0];
+	uint16_t current_group_size = 1;
+
+	for (uint16_t ptr_color_line = 1; ptr_color_line < IMAGE_BUFFER_SIZE; ptr_color_line++)
+	{
+		if ( ( color_line[ptr_color_line] != current_color ) || (ptr_color_line == IMAGE_BUFFER_SIZE-1) )
+		{
+			color_groups[ptr_color_groups] = current_color;
+			size_of_groups[ptr_color_groups] = current_group_size;
+
+			current_color = color_line[ptr_color_line];
+			ptr_color_groups++;
+			current_group_size = 1;
+		}
+		else
+		{
+			current_group_size++;
+		}
+
+	}
+
+	//step 2: clean the 2 vectors by deleting the small groups
+
+	for (ptr_color_groups = 0; ptr_color_groups < IMAGE_BUFFER_SIZE; ptr_color_groups++)
+	{
+		if (size_of_groups[ptr_color_groups] < MIN_GROUP_SIZE)
+		{
+			color_groups[ptr_color_groups] = UNDEFINED_COLOR;
+			size_of_groups[ptr_color_groups] = 0;
+		}
+	}
+
+	//step 3: fusion the groups together in 2 new vectors
+	Color color_groups_fusion [MAX_FUSION_GROUPS] = {UNDEFINED_COLOR};
+	uint16_t size_of_groups_fusion [MAX_FUSION_GROUPS] = {0};
+	uint8_t ptr_color_groups_fusion = 0;
+
+	for (ptr_color_groups = 0; ptr_color_groups < IMAGE_BUFFER_SIZE; ptr_color_groups++)
+	{
+		if (size_of_groups[ptr_color_groups] != 0)
+		{
+			current_color = color_groups[ptr_color_groups];
+		}
+	}
+
+
 }
 
 Flag extract_flag (Color color_bands [MAX_NUM_COLOR_BANDS])
