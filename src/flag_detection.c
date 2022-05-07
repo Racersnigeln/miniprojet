@@ -80,15 +80,11 @@ Color get_color(uint16_t pixel)
 
 void extract_color_bands(Color* color_bands, uint8_t color_line [MAX_NUM_COLOR_BANDS])
 {
-	//note: ajouter (uint_16t) devant colors_bands quand on l utilise comme dans page 2 corrige tp4
+	//note: ajouter (uint16_t) devant colors_bands quand on l utilise comme dans page 2 corrige tp4 <- ça marche pas...
 
-	//step 1: split the color_line into 2 that give the groups of colors and the size of each group
+	//step 1: split the color_line into 2 vectors that give the groups of colors and the size of each group
 	Color color_groups [IMAGE_BUFFER_SIZE] = {UNDEFINED_COLOR};
 	uint16_t size_of_groups [IMAGE_BUFFER_SIZE] = {0};
-
-//allocation dynamique ??? demander assistant. comme ça ? :
-//	Color* color_groups = {UNDEFINED_COLOR};
-//	uint16_t* size_of_groups = {0};
 
 	uint16_t ptr_color_groups = 0;
 	Color current_color = color_line[0];
@@ -119,7 +115,7 @@ void extract_color_bands(Color* color_bands, uint8_t color_line [MAX_NUM_COLOR_B
 
 	}
 
-	//step 2: clean the 2 vectors by moving the big groups to the beginning of the vectors
+	//step 2: clean the 2 vectors by moving the big groups to the beginning of the vectors and erasing the small groups
 	uint16_t number_of_groups = ptr_color_groups;
 	ptr_color_groups = 0;
 
@@ -163,7 +159,7 @@ void extract_color_bands(Color* color_bands, uint8_t color_line [MAX_NUM_COLOR_B
 		}
 	}
 
-	//step 4: replace the fusion groups that are smaller than MIN_COLOR_BAND_WIDTH (and cannot be consider as a band for the flag) by UNDEFINED_COLOR
+	//step 4: replace the fusion groups that are smaller than MIN_COLOR_BAND_WIDTH (and thus cannot be consider as a band for the flag) by UNDEFINED_COLOR
 	number_of_groups = ptr_color_groups;
 
 	for (uint16_t i = 0; i < number_of_groups; i++)
@@ -182,7 +178,7 @@ void extract_color_bands(Color* color_bands, uint8_t color_line [MAX_NUM_COLOR_B
 	{
 		if ( color_groups[i] != current_color )
 		{
-			(uint_16t)color_bands[ptr_color_groups] = current_color;
+			color_bands[ptr_color_groups] = current_color;
 			ptr_color_groups++;
 			current_color = color_groups[i];
 		}
@@ -190,13 +186,43 @@ void extract_color_bands(Color* color_bands, uint8_t color_line [MAX_NUM_COLOR_B
 		//we want to update the last group anyway
 		if ( i == number_of_groups-1 )
 		{
-			(uint_16t)color_bands[ptr_color_groups] = current_color;
+			color_bands[ptr_color_groups] = current_color;
 		}
 	}
 }
 
 Flag extract_flag (Color color_bands [MAX_NUM_COLOR_BANDS])
 {
+	//check if flag=France
+	for (uint8_t i = 0; i < MAX_NUM_COLOR_BANDS-2; i++)
+	{
+		if (color_bands[i] == BLUE)
+		{
+			if (color_bands[i+1] == WHITE)
+			{
+				if (color_bands[i+2] == RED)
+				{
+					return FRANCE;
+				}
+			}
+		}
+	}
+
+	//check if flag=Italy
+	for (uint8_t i = 0; i < MAX_NUM_COLOR_BANDS-2; i++)
+	{
+		if (color_bands[i] == GREEN)
+		{
+			if (color_bands[i+1] == WHITE)
+			{
+				if (color_bands[i+2] == RED)
+				{
+					return ITALY;
+				}
+			}
+		}
+	}
+
 	return UNDEFINED_FLAG;
 }
 
