@@ -6,7 +6,6 @@
 #include "ch.h"
 #include "hal.h"
 #include "memory_protection.h"
-// #include <messagebus.h>
 #include <usbcfg.h>
 #include <main.h>
 #include <motors.h>
@@ -38,42 +37,39 @@ CONDVAR_DECL(bus_condvar);
 
 int main(void)
 {
-    // Init bus for IR-sensors
-    messagebus_init(&bus, &bus_lock, &bus_condvar);
-
     halInit();
     chSysInit();
     mpu_init();
 
-    //start the serial communication
+    // Start the serial communication
     serial_start();
 
-    //start the USB communication
+    // Start the USB communication
     usb_start();
 
     init_camera();
 
 	motors_init();
 
-    //inti sound
+    // Init sound
     dac_start();
 
-    // init the proximity sensors
+    // Init bus for IR-sensors
+    messagebus_init(&bus, &bus_lock, &bus_condvar);
+
+    // Init the proximity sensors
     proximity_start();
     calibrate_ir();
 
-    // start the thread for dance
+    // Start the thread for dance
     start_dance();
 
-    // start the thread for update state
+    // Start the thread for update state
     start_state();
 
-    
-    /* Infinite loop. */
-    while (1) {
-    	//waits 1 second
+    while (1) 
+    {
         chThdSleepMilliseconds(1000);
-
     }
 }
 

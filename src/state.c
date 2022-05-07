@@ -15,15 +15,14 @@
 
 static State ROBOT_STATE = WAIT; 
 
-static THD_WORKING_AREA(waManageStates, 1024);
+static THD_WORKING_AREA(waManageStates, 4096);
 static THD_FUNCTION(ManageStates, arg)
 {
     chRegSetThreadName(__FUNCTION__);
     (void)arg;
 
-	static Flag country = UNDEFINED_FLAG
-    ;    //type Flag defined in process_image.h
-
+    // Type Flag defined in process_image.h
+	static Flag country = UNDEFINED_FLAG;
     int selector = get_selector();
 
     while(1)
@@ -42,9 +41,6 @@ static THD_FUNCTION(ManageStates, arg)
             }
             if ( ROBOT_STATE == FLAG_DETECTION )
             {
-                set_body_led(1);
-                chThdSleep(1000);
-                set_body_led(0);
                 country = get_flag();
                 ROBOT_STATE = (country == UNDEFINED_FLAG) ? WAIT : DANCE;
             }
