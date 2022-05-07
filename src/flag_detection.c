@@ -20,7 +20,7 @@
 
 //constant for the function extract_color_bands
 #define MIN_GROUP_SIZE 20
-#define MAX_FUSION_GROUPS 20
+#define MIN_COLOR_BAND_WIDTH 100
 
 void init_camera(void)
 {
@@ -94,15 +94,14 @@ void extract_color_bands(Color* color_bands, uint8_t color_line [MAX_NUM_COLOR_B
 	Color current_color = color_line[0];
 	uint16_t current_group_size = 1;
 
-	for (uint16_t ptr_color_line = 1; ptr_color_line < IMAGE_BUFFER_SIZE; ptr_color_line++)
+	for (uint16_t i = 1; i < IMAGE_BUFFER_SIZE; i++)
 	{
-		if ( ( color_line[ptr_color_line] != current_color ) || (ptr_color_line == IMAGE_BUFFER_SIZE-1) )
+		if ( color_line[i] != current_color )
 		{
 			color_groups[ptr_color_groups] = current_color;
 			size_of_groups[ptr_color_groups] = current_group_size;
-
-			current_color = color_line[ptr_color_line];
 			ptr_color_groups++;
+			current_color = color_line[i];
 			current_group_size = 1;
 		}
 		else
@@ -110,33 +109,90 @@ void extract_color_bands(Color* color_bands, uint8_t color_line [MAX_NUM_COLOR_B
 			current_group_size++;
 		}
 
+		//we want to update the last group anyway
+		if (i == IMAGE_BUFFER_SIZE-1)
+		{
+			color_groups[ptr_color_groups] = current_color;
+			size_of_groups[ptr_color_groups] = current_group_size;
+			ptr_color_groups++;
+		}
+
 	}
 
-	//step 2: clean the 2 vectors by deleting the small groups
+	//step 2: clean the 2 vectors by moving the big groups to the beginning of the vectors
+	uint16_t number_of_groups = ptr_color_groups;
+	ptr_color_groups = 0;
 
-	for (ptr_color_groups = 0; ptr_color_groups < IMAGE_BUFFER_SIZE; ptr_color_groups++)
+	for (uint16_t i = 0; i < number_of_groups; i++)
 	{
-		if (size_of_groups[ptr_color_groups] < MIN_GROUP_SIZE)
+		if (size_of_groups[i] >= MIN_GROUP_SIZE)
 		{
-			color_groups[ptr_color_groups] = UNDEFINED_COLOR;
-			size_of_groups[ptr_color_groups] = 0;
+			color_groups[ptr_color_groups] = color_groups[i];
+			size_of_groups[ptr_color_groups] = size_of_groups[i];
+			ptr_color_groups++;
 		}
 	}
 
-	//step 3: fusion the groups together in 2 new vectors
-	Color color_groups_fusion [MAX_FUSION_GROUPS] = {UNDEFINED_COLOR};
-	uint16_t size_of_groups_fusion [MAX_FUSION_GROUPS] = {0};
-	uint8_t ptr_color_groups_fusion = 0;
+	//step 3: fusion the groups of the same consecutive color together
+	number_of_groups = ptr_color_groups;
+	ptr_color_groups = 0;
+	current_color = color_groups[0];
+	current_group_size = size_of_groups [0];
 
-	for (ptr_color_groups = 0; ptr_color_groups < IMAGE_BUFFER_SIZE; ptr_color_groups++)
+	for (uint16_t i = 1; i < number_of_groups; i++)
 	{
-		if (size_of_groups[ptr_color_groups] != 0)
+		if ( color_groups[i] != current_color )
 		{
-			current_color = color_groups[ptr_color_groups];
+			color_groups[ptr_color_groups] = current_color;
+			size_of_groups [ptr_color_groups] = current_group_size;
+			ptr_color_groups++;
+			current_color = color_groups[i];
+			current_group_size = size_of_groups [i];
+		}
+		else
+		{
+			current_group_size += size_of_groups [i];
+		}
+
+		//we want to update the last group anyway
+		if ( i == number_of_groups-1 )
+		{
+			color_groups[ptr_color_groups] = current_color;
+			size_of_groups [ptr_color_groups] = current_group_size;
+			ptr_color_groups++;
 		}
 	}
 
+	//step 4: replace the fusion groups that are smaller than MIN_COLOR_BAND_WIDTH (and cannot be consider as a band for the flag) by UNDEFINED_COLOR
+	number_of_groups = ptr_color_groups;
 
+	for (uint16_t i = 0; i < number_of_groups; i++)
+	{
+		if ( size_of_groups[i] < MIN_COLOR_BAND_WIDTH)
+		{
+			color_groups[i] = UNDEFINED_COLOR;
+		}
+	}
+
+	//step 5: fusion the consecutive UNDEFINED_COLOR and return the color_bands
+	ptr_color_groups = 0;
+	current_color = color_groups[0];
+
+	for (uint16_t i = 1; i < number_of_groups; i++)
+	{
+		if ( color_groups[i] != current_color )
+		{
+			(uint_16t)color_bands[ptr_color_groups] = current_color;
+			ptr_color_groups++;
+			current_color = color_groups[i];
+		}
+
+		//we want to update the last group anyway
+		if ( i == number_of_groups-1 )
+		{
+			(uint_16t)color_bands[ptr_color_groups] = current_color;
+		}
+	}
 }
 
 Flag extract_flag (Color color_bands [MAX_NUM_COLOR_BANDS])
