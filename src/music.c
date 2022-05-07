@@ -161,7 +161,7 @@ Music MARSEILLAISE (void)
     song.rythm [46]  = DOUBLE_CROCHE;
     song.notes [46]  = NOTE_G3;
 
-    song.rythm [47]  = CROCHE_POINTEE;
+    song.rythm [47]  = CROCHE;
     song.notes [47]  = NOTE_D3;
 
     song.rythm [48]  = DOUBLE_CROCHE;
