@@ -13,5 +13,7 @@ void change_figure(void);
 
 void start_dance(void);
 
+void stop_dancing(void);
+
 
 #endif /*   DANCE_H */

@@ -21,9 +21,7 @@
 #define RED_CORRECTION	 	8
 #define GREEN_CORRECTION 	4
 #define BLUE_CORRECTION 	8
-#define RED_THRESHOLD   	80
-#define GREEN_THRESHOLD 	80
-#define BLUE_THRESHOLD  	80
+#define WHITE_THRESHOLD   	80
 
 // Constants for the function extract_color_bands
 #define MIN_GROUP_SIZE 		 20
@@ -62,30 +60,25 @@ Color get_color(uint16_t pixel)
 	{
 		color = RED;
 		// chprintf((BaseSequentialStream *)&SD3, "Color: Red\n");
-		// set_led(LED3, 1);
 	}
-	else if ( (blue > red + 15) & (blue > green + 15) )
+	else if ( (blue > red + 20) & (blue > green + 20) )
 	{
 		color = BLUE;
 		// chprintf((BaseSequentialStream *)&SD3, "Color: Blue\n");
-		// set_led(LED5, 1);
 	}
-	else if ( (green > red + 15) & (green > blue + 15) )
+	else if ( (green > red + 20) & (green > blue + 20) )
 	{
 		color = GREEN;
 		// chprintf((BaseSequentialStream *)&SD3, "Color: Green\n");
-		// set_led(LED7, 1);
 	}
-	else if ( (red > RED_THRESHOLD) & (blue > BLUE_THRESHOLD) & (green > GREEN_THRESHOLD) )
+	else if ( (red > WHITE_THRESHOLD) & (blue > WHITE_THRESHOLD) & (green > WHITE_THRESHOLD) )
 	{
 		color = WHITE;
 		// chprintf((BaseSequentialStream *)&SD3, "Color: White\n");
-		// set_led(LED1, 1);
 	}
 	else
 	{
 		// chprintf((BaseSequentialStream *)&SD3, "Color: Undefined\n");
-		// set_body_led(1);
 	}
 
 	return color;
@@ -235,7 +228,7 @@ Flag extract_flag (Color color_bands [MAX_NUM_COLOR_BANDS])
 			}
 		}
 	}
-
+	
 	return UNDEFINED_FLAG;
 }
 

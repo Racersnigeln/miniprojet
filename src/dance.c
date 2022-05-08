@@ -51,10 +51,20 @@ void rotate_right(void)
     right_motor_set_speed(-DANCE_SPEED*SPEED_TO_STEPS);
 }
 
-void dance_stop(void)
+void stop_motors(void)
 {
     left_motor_set_speed(0);
     right_motor_set_speed(0);
+}
+
+void stop_dancing(void)
+{
+    is_dancing = false;
+    music_position = 0;
+    stop_motors();
+    // Stop playing sound
+    dac_stop();
+    
 }
 
 void change_figure(void)
@@ -114,7 +124,7 @@ static THD_FUNCTION(Dance, arg)
 
     while(1)
     {
-        if ( (is_dancing) & (get_robot_state() != PAUSE) )
+        if ( (is_dancing) & (get_robot_state() == WAIT) )
         {
             time = chVTGetSystemTime();
 
@@ -128,7 +138,7 @@ static THD_FUNCTION(Dance, arg)
             {
                 // Stop singing and dancing
                 dac_stop();
-                dance_stop();
+                stop_motors();
             }
 
             if (current_song.rythm[music_position] > note_offset)
@@ -143,11 +153,7 @@ static THD_FUNCTION(Dance, arg)
 
             if (music_position >= MUSIC_SIZE)
             {
-                is_dancing = false;
-                music_position = 0;
-                dance_stop();
-                // Stop playing sound
-                dac_stop();
+                stop_dancing();
             }
         } 
         else 
