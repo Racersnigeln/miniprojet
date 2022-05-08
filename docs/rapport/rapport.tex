@@ -3,8 +3,12 @@
 \usepackage[french]{babel}
 \usepackage{fancyhdr}
 \usepackage{tikz}
-\usetikzlibrary{calc}
+\usetikzlibrary{positioning, calc}
 \usepackage{graphicx}
+
+% Subfigures
+\usepackage{caption}
+\usepackage{subcaption}
 
 % Définir la pagination et.c.
 \pagestyle{fancy}
@@ -63,4 +67,154 @@
     \section{Introduction}
 
     Dans ce projet on a aidé notre cher ami Jean-Bot de développer ces compétences de danse, chanson et géographie.
+
+    \section{Métholodogie}
+
+    \begin{figure}[!ht]
+        \centering
+        \begin{subfigure}{\textwidth}
+            \begin{center}
+                \begin{tikzpicture}[scale=0.3]
+                    \foreach \i in {1,...,4}
+                    {
+                        \draw[fill=gray] (\i,0) rectangle (\i+1,2);
+                    }
+                    \foreach \i in {5,...,8}
+                    {
+                        \draw[fill=red] (\i,0) rectangle (\i+1,2);
+                    }
+                    \foreach \i in {9,...,11}
+                    {
+                        \draw[fill=green] (\i,0) rectangle (\i+1,2);
+                    }
+                    \foreach \i in {12,...,13}
+                    {
+                        \draw (\i,0) rectangle (\i+1,2);
+                    }
+                    \foreach \i in {14,...,23}
+                    {
+                        \draw[fill=blue] (\i,0) rectangle (\i+1,2);
+                    }
+                    \foreach \i in {24,...,27}
+                    {
+                        \draw (\i,0) rectangle (\i+1,2);
+                    }
+                    \draw[fill=green] (28,0) rectangle (29,2);
+                    \foreach \i in {29,...,34}
+                    {
+                        \draw (\i,0) rectangle (\i+1,2);
+                    }
+                    \foreach \i in {35,...,44}
+                    {
+                        \draw[fill=red] (\i,0) rectangle (\i+1,2);
+                    }
+                \end{tikzpicture}
+            \end{center}
+            \caption{Une fois les valeurs RGB de chaque pixel sont convertits à des couleurs, elles sont stockées de cette manière. La couleur grise représente une couleur non définie. La caméra fournit en fait une ligne de 640 pixels, mais dans cet exemple seulement 40 sont représentés.}
+        \end{subfigure}
+
+        \vspace{5mm}
+
+        \begin{subfigure}{\textwidth}
+            \begin{center}
+                \begin{tikzpicture}[scale=0.4]
+                    \draw[fill=gray]  (0,3) rectangle (1,5) node[midway] (A) {};
+                    \draw[fill=red]   (1,3) rectangle (2,5);
+                    \draw[fill=green] (2,3) rectangle (3,5);
+                    \draw[fill=white] (3,3) rectangle (4,5);
+                    \draw[fill=blue]  (4,3) rectangle (5,5);
+                    \draw[fill=white] (5,3) rectangle (6,5);
+                    \draw[fill=green] (6,3) rectangle (7,5);
+                    \draw[fill=white] (7,3) rectangle (8,5);
+                    \draw[fill=red]   (8,3) rectangle (9,5);
+                    \node[anchor=east] () at ($(A)-(1,0)$) {\texttt{color\_groups:}};
+
+                    \draw (0,0) rectangle (1,2) node[midway] (B) {\texttt{4}};
+                    \draw (1,0) rectangle (2,2) node[midway] {\texttt{4}};
+                    \draw (2,0) rectangle (3,2) node[midway] {\texttt{3}};
+                    \draw (3,0) rectangle (4,2) node[midway] {\texttt{2}};
+                    \draw (4,0) rectangle (5,2) node[midway] {\texttt{10}};
+                    \draw (5,0) rectangle (6,2) node[midway] {\texttt{4}};
+                    \draw (6,0) rectangle (7,2) node[midway] {\texttt{1}};
+                    \draw (7,0) rectangle (8,2) node[midway] {\texttt{6}};
+                    \draw (8,0) rectangle (9,2) node[midway] {\texttt{10}};
+                    \node[anchor=east] () at ($(B)-(1,0)$) {\texttt{size\_of\_groups:}};
+                \end{tikzpicture}
+            \end{center}
+            \caption{Les pixels sont groupés en fonction de leurs couleurs dans les deux arrays \texttt{color\_groups} et \texttt{size\_of\_groups} qui contiennent la couleur et la taille des groupes respectivement.}
+        \end{subfigure}
+
+        \vspace{5mm}
+
+        \begin{subfigure}{\textwidth}
+            \begin{center}
+                \begin{tikzpicture}[scale=0.4]
+                    \draw[fill=gray]  (0,3) rectangle (1,5) node[midway] (A) {};
+                    \draw[fill=red]   (1,3) rectangle (2,5);
+                    \draw[fill=blue]  (2,3) rectangle (3,5);
+                    \draw[fill=white] (3,3) rectangle (4,5);
+                    \draw[fill=white] (4,3) rectangle (5,5);
+                    \draw[fill=red]   (5,3) rectangle (6,5);
+                    \draw[fill=gray]  (6,3) rectangle (7,5);
+                    \node[anchor=east] () at ($(A)-(1,0)$) {\texttt{color\_groups:}};
+
+                    \draw (0,0) rectangle (1,2) node[midway] (B) {\texttt{4}};
+                    \draw (1,0) rectangle (2,2) node[midway] {\texttt{4}};
+                    \draw (2,0) rectangle (3,2) node[midway] {\texttt{10}};
+                    \draw (3,0) rectangle (4,2) node[midway] {\texttt{4}};
+                    \draw (4,0) rectangle (5,2) node[midway] {\texttt{6}};
+                    \draw (5,0) rectangle (6,2) node[midway] {\texttt{10}};
+                    \draw (6,0) rectangle (7,2) node[midway] {\texttt{?}};
+                    \node[anchor=east] () at ($(B)-(1,0)$) {\texttt{size\_of\_groups:}};
+                \end{tikzpicture}
+            \end{center}
+
+            \caption{Les groupes avec une taille supérieur à une seuile spécifique, ici 3, sont placés au début des arrays, c'est à dire que les groupes trop petits sont supprimés. Cela se fait pour ammortir l'effet de bruit.}
+        \end{subfigure}
+
+        \vspace{5mm}
+
+        \begin{subfigure}{\textwidth}
+            \begin{center}
+                \begin{tikzpicture}[scale=0.4]
+                    \draw[fill=gray]  (0,3) rectangle (1,5) node[midway] (A) {};
+                    \draw[fill=red]   (1,3) rectangle (2,5);
+                    \draw[fill=blue]  (2,3) rectangle (3,5);
+                    \draw[fill=white] (3,3) rectangle (4,5);
+                    \draw[fill=red]   (4,3) rectangle (5,5);
+                    \draw[fill=gray]  (5,3) rectangle (6,5);
+                    \node[anchor=east] () at ($(A)-(1,0)$) {\texttt{color\_groups:}};
+
+                    \draw (0,0) rectangle (1,2) node[midway] (B) {\texttt{4}};
+                    \draw (1,0) rectangle (2,2) node[midway] {\texttt{4}};
+                    \draw (2,0) rectangle (3,2) node[midway] {\texttt{10}};
+                    \draw (3,0) rectangle (4,2) node[midway] {\texttt{10}};
+                    \draw (4,0) rectangle (5,2) node[midway] {\texttt{10}};
+                    \draw (5,0) rectangle (6,2) node[midway] {\texttt{?}};
+                    \node[anchor=east] () at ($(B)-(1,0)$) {\texttt{size\_of\_groups:}};
+                \end{tikzpicture}
+            \end{center}
+
+            \caption{Les groupes consécutives ayant la même couleur sont fusionnés, et les groupes suivants sont décalés d'un placement.}
+        \end{subfigure}
+
+        \vspace{5mm}
+
+        \begin{subfigure}{\textwidth}
+            \begin{center}
+                \begin{tikzpicture}[scale=0.4]
+                    \draw[fill=gray]  (0,3) rectangle (1,5) node[midway] (A) {};
+                    \draw[fill=blue]  (1,3) rectangle (2,5);
+                    \draw[fill=white] (2,3) rectangle (3,5);
+                    \draw[fill=red]   (3,3) rectangle (4,5);
+                    \draw[fill=gray]  (4,3) rectangle (5,5);
+                    \node[anchor=east] () at ($(A)-(1,0)$) {\texttt{color\_groups:}};
+                \end{tikzpicture}
+            \end{center}
+
+            \caption{Les groupes d'une taille inférieure d'une seuile spécifique, ici 8, sont fusionnés avec les groupes non-définis entourants.}
+        \end{subfigure}
+        \caption{Un schéma qui explique comment fonctionne la détection des drapeaux.}
+    \end{figure}
+
 \end{document}
