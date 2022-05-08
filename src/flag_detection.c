@@ -21,9 +21,9 @@
 #define RED_CORRECTION	 	8
 #define GREEN_CORRECTION 	4
 #define BLUE_CORRECTION 	8
-#define RED_THRESHOLD   	50
-#define GREEN_THRESHOLD 	50
-#define BLUE_THRESHOLD  	50
+#define RED_THRESHOLD   	80
+#define GREEN_THRESHOLD 	80
+#define BLUE_THRESHOLD  	80
 
 // Constants for the function extract_color_bands
 #define MIN_GROUP_SIZE 		 20
@@ -34,8 +34,8 @@ void init_camera(void)
 	dcmi_start();
 	po8030_start();
 
-	//Takes pixels 0 to IMAGE_BUFFER_SIZE of the line 10 + 11 (minimum 2 lines because reasons)
-	po8030_advanced_config(FORMAT_RGB565, 0, 11, IMAGE_BUFFER_SIZE, 2, SUBSAMPLING_X1, SUBSAMPLING_X1);
+	//Takes pixels 0 to IMAGE_BUFFER_SIZE of the line 150 + 151 (minimum 2 lines because reasons)
+	po8030_advanced_config(FORMAT_RGB565, 0, 150, IMAGE_BUFFER_SIZE, 2, SUBSAMPLING_X1, SUBSAMPLING_X1);
 	dcmi_enable_double_buffering();
 	dcmi_set_capture_mode(CAPTURE_ONE_SHOT);
 	dcmi_prepare();
@@ -51,37 +51,36 @@ void capture_image(uint8_t* img_buff_ptr)
 Color get_color(uint16_t pixel)
 {
 	uint8_t red   = ((pixel & 0xF800) >> 11) * RED_CORRECTION;
-	uint8_t green = ((pixel & 0x07E0) >> 5)  * GREEN_CORRECTION;
-	uint8_t blue  = ((pixel & 0x001F) >> 0)  * BLUE_CORRECTION;
+	uint8_t green = ((pixel & 0x07E0) >> 5) * GREEN_CORRECTION;
+	uint8_t blue  = ((pixel & 0x001F) >> 0) * BLUE_CORRECTION;
 
-	chprintf((BaseSequentialStream *)&SD3, "RGB: %3d, %3d, %3d\n", red, green, blue);
+	// chprintf((BaseSequentialStream *)&SD3, "RGB: %3d, %3d, %3d\n", red, green, blue);
 
 	Color color = UNDEFINED_COLOR;
-	// char* color_name = "Undefined";
 
-	if ( (red > RED_THRESHOLD) & (blue > BLUE_THRESHOLD) & (green > GREEN_THRESHOLD) )
-	{
-		color = WHITE;
-		// chprintf((BaseSequentialStream *)&SD3, "Color: White\n");
-		// set_led(LED1, 1);
-	}
-	else if ( (red > RED_THRESHOLD) & (blue <= BLUE_THRESHOLD) & (green <= GREEN_THRESHOLD) )
+	if ( (red > blue + 15) & (red > green + 15) )
 	{
 		color = RED;
 		// chprintf((BaseSequentialStream *)&SD3, "Color: Red\n");
 		// set_led(LED3, 1);
 	}
-	else if ( (red <= RED_THRESHOLD) & (blue > BLUE_THRESHOLD) & (green <= GREEN_THRESHOLD) )
+	else if ( (blue > red + 15) & (blue > green + 15) )
 	{
 		color = BLUE;
 		// chprintf((BaseSequentialStream *)&SD3, "Color: Blue\n");
 		// set_led(LED5, 1);
 	}
-	else if ( (red <= RED_THRESHOLD) & (blue <= BLUE_THRESHOLD) & (green > GREEN_THRESHOLD) )
+	else if ( (green > red + 15) & (green > blue + 15) )
 	{
 		color = GREEN;
 		// chprintf((BaseSequentialStream *)&SD3, "Color: Green\n");
 		// set_led(LED7, 1);
+	}
+	else if ( (red > RED_THRESHOLD) & (blue > BLUE_THRESHOLD) & (green > GREEN_THRESHOLD) )
+	{
+		color = WHITE;
+		// chprintf((BaseSequentialStream *)&SD3, "Color: White\n");
+		// set_led(LED1, 1);
 	}
 	else
 	{

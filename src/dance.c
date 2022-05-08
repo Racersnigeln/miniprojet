@@ -146,6 +146,7 @@ static THD_FUNCTION(Dance, arg)
                 is_dancing = false;
                 music_position = 0;
                 dance_stop();
+                // Stop playing sound
                 dac_stop();
             }
         } 
@@ -158,5 +159,5 @@ static THD_FUNCTION(Dance, arg)
 
 void start_dance(void)
 {
-	chThdCreateStatic(waDance, sizeof(waDance), NORMALPRIO+10, Dance, NULL);
+	chThdCreateStatic(waDance, sizeof(waDance), NORMALPRIO+1, Dance, NULL);
 }

@@ -41,16 +41,22 @@ static THD_FUNCTION(ManageStates, arg)
             }
             if ( ROBOT_STATE == FLAG_DETECTION )
             {
-                country = get_flag();
-                ROBOT_STATE = (country == UNDEFINED_FLAG) ? WAIT : DANCE;
+                set_body_led(1);
+                systime_t start_time = chVTGetSystemTime();
+                while ( (chVTGetSystemTime() < start_time + 10000) 
+                        & (country == UNDEFINED_FLAG) )
+                {
+                    country = get_flag();
+                    ROBOT_STATE = (country == UNDEFINED_FLAG) ? WAIT : DANCE;
+                }
+                set_body_led(0);
             }
             if ( ROBOT_STATE == DANCE )
             {
-                restart_dance(ITALY);
-                ROBOT_STATE = WAIT;
+                restart_dance(country);
             }
         }
-        chThdSleep(100);     //(ms) a changer ?
+        chThdSleep(100);
     }
 }
 
