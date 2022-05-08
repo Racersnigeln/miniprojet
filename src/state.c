@@ -62,7 +62,7 @@ static THD_FUNCTION(ManageStates, arg)
 
 void start_state (void)
 {
-    chThdCreateStatic(waManageStates, sizeof(waManageStates), NORMALPRIO, ManageStates, NULL);
+    chThdCreateStatic(waManageStates, sizeof(waManageStates), NORMALPRIO+1, ManageStates, NULL);
 }
 
 State get_robot_state () 

@@ -159,5 +159,5 @@ static THD_FUNCTION(Dance, arg)
 
 void start_dance(void)
 {
-	chThdCreateStatic(waDance, sizeof(waDance), NORMALPRIO+1, Dance, NULL);
+	chThdCreateStatic(waDance, sizeof(waDance), NORMALPRIO, Dance, NULL);
 }
