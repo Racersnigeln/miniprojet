@@ -27,6 +27,7 @@ static THD_FUNCTION(ManageStates, arg)
 
     while(1)
     {
+    	chprintf((BaseSequentialStream *)&SD3, "State= %d\n", ROBOT_STATE);
         if ( obstacle_detected() )
         {
             ROBOT_STATE = PAUSE;
@@ -54,6 +55,7 @@ static THD_FUNCTION(ManageStates, arg)
             if ( ROBOT_STATE == DANCE )
             {
                 restart_dance(country);
+                country = UNDEFINED_FLAG;
             }
         }
         chThdSleep(100);
