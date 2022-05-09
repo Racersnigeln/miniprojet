@@ -4,7 +4,7 @@
 #define MAX_NUM_COLOR_BANDS 10
 #define IMAGE_BUFFER_SIZE 640
 
-typedef enum {UNDEFINED_FLAG, FRANCE, ITALY} Flag;
+typedef enum {UNDEFINED_FLAG, FRANCE, ITALY, JAPAN} Flag;
 typedef enum {UNDEFINED_COLOR, WHITE, RED, GREEN, BLUE} Color;
 
 void init_camera(void);
