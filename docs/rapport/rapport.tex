@@ -227,6 +227,13 @@
 
 
     \section{Points à améliorer}
-    Il y a maintes points à améliorer afin d'améliorer la qualité du robot.
+    Il y a maintes points à améliorer afin d'améliorer la qualité du robot, dont les plus importants sont présentés ci-dessous.
+
+    \subsection{Créer une thread propre pour la détection d'obstacles}
+    En ce moment le robot vérifie l'absence d'obstacles en appellant une fonction au début de la thread qui gère les inputs et les états.
+    Par conséquent, un obstacle peut se présenter après cet appel, lorsque le robot est occupé par d'autres tâches, sans causer un arrêt d'activité.
+    Cela se produit par exemple pendant la détection des drapeaux où le robot est bloqué dans une boucle.
+
+    L'ajout d'une thread comlètement dédiée
 
 \end{document}
