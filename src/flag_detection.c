@@ -228,7 +228,22 @@ Flag extract_flag (Color color_bands [MAX_NUM_COLOR_BANDS])
 			}
 		}
 	}
-	
+	// Check if flag = Japan
+	for (uint8_t i = 0; i < MAX_NUM_COLOR_BANDS-2; i++)
+	{
+		if (color_bands[i] == WHITE)
+		{
+			if (color_bands[i+1] == RED)
+			{
+				if (color_bands[i+2] == WHITE)
+				{
+					return JAPAN;
+				}
+			}
+		}
+	}
+
+
 	return UNDEFINED_FLAG;
 }
 

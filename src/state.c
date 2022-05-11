@@ -54,7 +54,7 @@ static THD_FUNCTION(ManageStates, arg)
             }
             if ( ROBOT_STATE == DANCE )
             {
-                restart_dance(country);
+                restart_dance(JAPAN);
                 country = UNDEFINED_FLAG;
             }
         }

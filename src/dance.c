@@ -102,6 +102,11 @@ Music LUT_flag_to_music (Flag country)
     {
         return BELLA_CIAO();
     }
+    else if (country == JAPAN)
+	{
+		return WII_THEME();
+	}
+    return NO_MUSIC();
 }
 
 void restart_dance(Flag country)

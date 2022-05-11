@@ -26,4 +26,6 @@ Music MARSEILLAISE (void);
 
 Music BELLA_CIAO (void) ;
 
+Music WII_THEME (void) ;
+
 #endif /*   MUSIC_H */
