@@ -3,8 +3,13 @@
 \usepackage[french]{babel}
 \usepackage{fancyhdr}
 \usepackage{tikz}
+\usepackage{xcolor}
 \usetikzlibrary{positioning, calc}
 \usepackage{graphicx}
+
+%define_color
+\definecolor{bleu}{rgb}{0,0.52,1}
+\definecolor{vert}{rgb}{0.45,0.82,0}
 
 % Subfigures
 \usepackage{caption}
@@ -71,9 +76,18 @@
     \section{Métholodogie}
     
     \subsection{Schéma général du programme}
-    (en cours)
+    \begin{figure}[!ht]
+    \includegraphics[scale=0.75]{docs/rapport/images/Structure_Code.pdf}
+    \caption{Schéma général du programme. En jaune les threads, en noir les fonctions et en bleu (rouge dans le cas de country) les variables utiles au bon déroulement du programme.}
+    \label{fig:structure} % Pour référer à cette figure dans le texte
+\end{figure}
+
+    L'utilisateur tourne le selecteur (peu importe de combien de cran). En appellant la fonction \textbf{get$\_$selector}, le thread \colorbox{yellow}{\textbf{ManagesStates}} met l'état du robot à \textcolor{bleu}{FLAG$\_$DETECTION} ce qui a pour conséquence d'appeler la fonction \textbf{get$\_$flag} (\textcolor{vert}{flèche en vert}). \par
+    
+    A chaque appel de \textbf{get$\_$flag}, une image sur la caméra est capturée et on stocke une ligne de pixel dans la variable \textcolor{bleu}{pixel$\_$line}. On convertit chaque pixel de \textcolor{bleu}{pixel$\_$line} en un pixel de couleur (blanc, rouge, vert, bleu, indéfini) grâce à la fonction \textbf{get$\_$color} qu'on stocke ensuite dans \textcolor{bleu}{color$\_$line}. La fonction \textbf{extract$\_$color$\_$bands} s'occupe d'analyser \textcolor{bleu}{color$\_$line} (voir section \ref{extract_color_bands}) pour 
 
     \subsection{La fonction extract$\_$color$\_$bands}
+    \label{extract_color_bands}
     \begin{figure}[!ht]
         \centering
         \begin{subfigure}{\textwidth}
