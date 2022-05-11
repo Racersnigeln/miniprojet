@@ -243,13 +243,27 @@
 
 
     \section{Points à améliorer}
-    Il y a maintes points à améliorer afin d'améliorer la qualité du robot, dont les plus importants sont présentés ci-dessous.
+    Il y a maintes points à améliorer afin d'augmenter la qualité du robot, dont les plus importants sont présentés ci-dessous.
 
     \subsection{Créer une thread propre pour la détection d'obstacles}
     En ce moment le robot vérifie l'absence d'obstacles en appellant une fonction au début de la thread qui gère les inputs et les états.
     Par conséquent, un obstacle peut se présenter après cet appel, lorsque le robot est occupé par d'autres tâches, sans causer un arrêt d'activité.
     Cela se produit par exemple pendant la détection des drapeaux où le robot est bloqué dans une boucle.
 
-    L'ajout d'une thread comlètement dédiée
+    L'ajout d'une thread comlètement dédiée à la détection d'obstacle permettrait d'y réagir à chaque instant.
+    En revanche cela impliquerait aussi une nécessité de faire communiquer cette thread avec les autres, c'est à dire introduire plus de variables globales.
+    La raison pour laquelle cela n'est pas encore fait est une manque de temps et la reorganisation du code nécessaire.
+
+    \subsection{Rendre la détection de couleurs plus fiable}
+    La caméra du robot fournit une image de 640 fois 480 pixels sous le format RGB565.
+    Cela signifie que l'intensité de rouge, vert et bleu sont représentés sur 5, 6 et 5 pixels respectivement.
+    Afin de déterminer la couleur représentée, les écarts entre ces trois valeurs sont analysées.
+    Si R dépasse G et B par un seuil spécifique, c'est admis que c'est bien rouge qui est représenté.
+    La détection de vert et bleu se fait de la même façon, et au cas de blanc, le test et fort ressemblant.
+    
+    Le problème de cette démarche est que les valeurs RGB sont dépendantes de la luminosité, ce qui implique des performances dépendantes de la luminosité.
+    Le robot pourrait donc être capable de détecter une couleur à un moment donné, or incapable quelques mètres à côté ou un certain temps après.
+    De sorte d'y prévenir un système qui prends en compte la luminosité ambiante pourrait être mis en place.
+    Sous supposition que les valeurs RGB sont représentées sur la même échelle, c'est à dire le même nombre de bits, le pourcentage dont une valeur dépasse les autres pourrait être analysé par exemple. 
 
 \end{document}
