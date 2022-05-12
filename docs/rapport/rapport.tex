@@ -34,33 +34,10 @@
 
 \begin{document}
     \begin{titlepage}
-        \vspace*{\fill}
-        \begin{center}
-            \begin{tikzpicture}[remember picture, overlay]
-                \node[] at (current page.center) {\includegraphics[angle=90, width=\paperwidth]{images/background.jpg}};
-                \fill[color = white, opacity = 0.9, rounded corners = 2ex] (-10,5) rectangle (10,-5);
-                \node (titre) at (0,0)
-                    {
-                        \begin{tabular}{c}
-                            \hline
-                            \\
-                            \huge\it Les aventures incroyables de \\
-                            \\
-                            \Huge\bf Jean-Bot Baptiste I\\
-                            \\
-                            \huge\it Le raccourceur des circuits\\
-                            \\
-                            \hline
-                        \end{tabular}
-                    };
-                \node[left]  at ($(titre.west)-(0.5,0)$) {\includegraphics[width=5cm]{images/kawwai.pdf}};
-                \node[right] at ($(titre.east)+(0.5,0)$) {\scalebox{-1}[1]{\includegraphics[width=5cm]{images/kawwai.pdf}}};
-                \node[above] at (titre.north) {\textbf{\large MICRO-315 Miniprojet}};
-                \node[below] at (titre.south) {\textit{\large Un projet de robotique de Julian Donevsky et Olof Lissmats}};
-            \end{tikzpicture}
-        \end{center}
-        \vspace{5cm}
-        \vspace*{\fill}
+    \begin{tikzpicture}[remember picture, overlay]
+        \node[] () at (current page.center) {\includegraphics[width=\paperwidth]{couverture/couverture.pdf}};
+    \end{tikzpicture}
+        
     \end{titlepage}
 
     \thispagestyle{empty}
