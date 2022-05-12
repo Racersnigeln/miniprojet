@@ -1,11 +1,8 @@
-#include "ch.h"
-#include "hal.h"
-#include <chprintf.h>
-#include <usbcfg.h>
+#include <ch.h>
+#include <hal.h>
 
-#include <dance.h>
-#include <audio/play_melody.h>
-
+#include <dance.h>              // For Music type 
+#include <audio/play_melody.h>  // For definition of notes
 #include <music.h>
 
 Music NO_MUSIC (void)
@@ -198,7 +195,7 @@ Music BELLA_CIAO (void)
 {
     Music song = {{0},{0}} ;
 
-    uint16_t tempo = 136 ;
+    uint16_t tempo = 136 ;      //noire = 136
 
     song.rythm [0]  = CROCHE ;
     song.notes [0]  = NOTE_E3;
@@ -420,13 +417,13 @@ Music WII_THEME (void)
     song.notes [24]  = SILENCE;
 
     song.rythm [25]  = CROCHE;
-    song.notes [25]  = NOTE_G3;
+    song.notes [25]  = NOTE_GS3;
 
     song.rythm [26]  = CROCHE;
     song.notes [26]  = SILENCE;
 
     song.rythm [27]  = CROCHE;
-    song.notes [27]  = NOTE_C4;
+    song.notes [27]  = NOTE_CS4;
 
     song.rythm [28]  = CROCHE;
     song.notes [28]  = NOTE_FS3;
@@ -441,73 +438,238 @@ Music WII_THEME (void)
     song.notes [31]  = SILENCE;
 
     song.rythm [32]  = CROCHE;
+    song.notes [32]  = NOTE_GS3;
+
+    song.rythm [33]  = CROCHE;
+    song.notes [33]  = SILENCE;
+
+    song.rythm [34]  = CROCHE;
+    song.notes [34]  = NOTE_CS4;
+
+    song.rythm [35]  = CROCHE;
+    song.notes [35]  = SILENCE;
+
+    song.rythm [36]  = CROCHE;
+    song.notes [36]  = NOTE_G3;
+
+    song.rythm [37]  = CROCHE;
+    song.notes [37]  = NOTE_FS3;
+
+    song.rythm [38]  = CROCHE;
+    song.notes [38]  = SILENCE;
+
+    song.rythm [39]  = CROCHE;
+    song.notes [39]  = NOTE_E3;
+
+    song.rythm [40]  = CROCHE;
+    song.notes [40]  = SILENCE;
+
+    song.rythm [41]  = CROCHE;
+    song.notes [41]  = NOTE_C3;
+
+    song.rythm [42]  = CROCHE;
+    song.notes [42]  = NOTE_C3;
+
+    song.rythm [43]  = CROCHE;
+    song.notes [43]  = NOTE_C3;
+
+    song.rythm [44]  = NOIRE_POINTEE;
+    song.notes [44]  = SILENCE;
+
+    song.rythm [45]  = CROCHE;
+    song.notes [45]  = NOTE_C3;
+
+    song.rythm [46]  = CROCHE;
+    song.notes [46]  = NOTE_C3;
+
+    song.rythm [47]  = CROCHE;
+    song.notes [47]  = NOTE_C3;
+
+    song.rythm [48]  = BLANCHE;
+    song.notes [48]  = SILENCE;
+
+    song.rythm [49]  = CROCHE;
+    song.notes [49]  = NOTE_AS3;
+
+    song.rythm [50]  = CROCHE;
+    song.notes [50]  = NOTE_B3;
+
+    song.rythm [51]  = CROCHE;
+    song.notes [51]  = NOTE_CS4;
+
+    song.rythm [52]  = CROCHE;
+    song.notes [52]  = NOTE_D4;
+
+    song.rythm [53]  = CROCHE;
+    song.notes [53]  = NOTE_FS4;
+
+    song.rythm [54]  = CROCHE;
+    song.notes [54]  = NOTE_A4;
+
+    // convertir les notes en milliseconde
+    for (uint8_t i=0; i < MUSIC_SIZE; ++i)
+    {
+        song.rythm [i] *= NOTE_TO_MS / tempo ;
+    }
+
+    return song ;
+}
+
+Music LA_DANSE_DES_CANARDS (void)
+{
+    Music song = {{0},{0}} ;
+
+    uint16_t tempo = 192 ;     // blanche = 96
+
+    song.rythm [0]  = CROCHE ;
+    song.notes [0]  = NOTE_D4;
+
+    song.rythm [1]  = CROCHE ;
+    song.notes [1]  = NOTE_D4;
+
+    song.rythm [2]  = CROCHE ;
+    song.notes [2]  = NOTE_E4;
+
+    song.rythm [3]  = CROCHE ;
+    song.notes [3]  = NOTE_E4;
+
+    song.rythm [4]  = CROCHE;
+    song.notes [4]  = NOTE_B3;
+
+    song.rythm [5]  = CROCHE;
+    song.notes [5]  = NOTE_B3;
+
+    song.rythm [6]  = NOIRE;
+    song.notes [6]  = NOTE_D4;
+
+    song.rythm [7]  = CROCHE;
+    song.notes [7]  = NOTE_D4;
+
+    song.rythm [8]  = CROCHE;
+    song.notes [8]  = NOTE_D4;
+
+    song.rythm [9]  = CROCHE;
+    song.notes [9]  = NOTE_E4;
+
+    song.rythm [10]  = CROCHE ;
+    song.notes [10]  = NOTE_E4;
+
+    song.rythm [11]  = CROCHE;
+    song.notes [11]  = NOTE_B3;
+
+    song.rythm [12]  = CROCHE;
+    song.notes [12]  = NOTE_B3;
+
+    song.rythm [13]  = NOIRE;
+    song.notes [13]  = NOTE_D4;
+
+    song.rythm [14]  = CROCHE;
+    song.notes [14]  = NOTE_D4;
+
+    song.rythm [15]  = CROCHE;
+    song.notes [15]  = NOTE_D4;
+
+    song.rythm [16]  = CROCHE;
+    song.notes [16]  = NOTE_E4;
+
+    song.rythm [17]  = CROCHE;
+    song.notes [17]  = NOTE_E4;
+
+    song.rythm [18]  = CROCHE;
+    song.notes [18]  = NOTE_G4;
+
+    song.rythm [19]  = CROCHE;
+    song.notes [19]  = NOTE_G4;
+
+    song.rythm [20]  = NOIRE;
+    song.notes [20]  = NOTE_FS4;
+
+    song.rythm [21]  = NOIRE;
+    song.notes [21]  = NOTE_FS4;
+
+    song.rythm [22]  = NOIRE;
+    song.notes [22]  = NOTE_E4;
+
+    song.rythm [23]  = NOIRE;
+    song.notes [23]  = NOTE_D4;
+
+    song.rythm [24]  = NOIRE;
+    song.notes [24]  = NOTE_C4;
+
+    song.rythm [25]  = CROCHE;
+    song.notes [25]  = NOTE_C4;
+
+    song.rythm [26]  = CROCHE;
+    song.notes [26]  = NOTE_C4;
+
+    song.rythm [27]  = CROCHE;
+    song.notes [27]  = NOTE_D4;
+
+    song.rythm [28]  = CROCHE;
+    song.notes [28]  = NOTE_D4;
+
+    song.rythm [29]  = CROCHE;
+    song.notes [29]  = NOTE_A3;
+
+    song.rythm [30]  = CROCHE;
+    song.notes [30]  = NOTE_A3;
+
+    song.rythm [31]  = NOIRE;
+    song.notes [31]  = NOTE_C4;
+
+    song.rythm [32]  = CROCHE;
     song.notes [32]  = NOTE_C4;
 
     song.rythm [33]  = CROCHE;
     song.notes [33]  = NOTE_C4;
 
     song.rythm [34]  = CROCHE;
-    song.notes [34]  = NOTE_C4;
+    song.notes [34]  = NOTE_D4;
 
     song.rythm [35]  = CROCHE;
     song.notes [35]  = NOTE_D4;
 
     song.rythm [36]  = CROCHE;
-    song.notes [36]  = NOTE_C4;
+    song.notes [36]  = NOTE_A3;
 
     song.rythm [37]  = CROCHE;
-    song.notes [37]  = NOTE_B3;
+    song.notes [37]  = NOTE_A3;
 
     song.rythm [38]  = NOIRE;
-    song.notes [38]  = SILENCE;
+    song.notes [38]  = NOTE_C4;
 
-    song.rythm [39]  = CROCHE_POINTEE;
+    song.rythm [39]  = CROCHE;
     song.notes [39]  = NOTE_D4;
 
-    song.rythm [40]  = DOUBLE_CROCHE;
+    song.rythm [40]  = CROCHE;
     song.notes [40]  = NOTE_D4;
 
-    song.rythm [41]  = NOIRE;
-    song.notes [41]  = NOTE_D4;
+    song.rythm [41]  = CROCHE;
+    song.notes [41]  = NOTE_E4;
 
-    song.rythm [42]  = CROCHE_POINTEE;
-    song.notes [42]  = NOTE_B3;
+    song.rythm [42]  = CROCHE;
+    song.notes [42]  = NOTE_E4;
 
-    song.rythm [43]  = DOUBLE_CROCHE;
-    song.notes [43]  = NOTE_G3;
+    song.rythm [43]  = CROCHE;
+    song.notes [43]  = NOTE_FS4;
 
-    song.rythm [44]  = NOIRE;
-    song.notes [44]  = NOTE_D4;
+    song.rythm [44]  = CROCHE;
+    song.notes [44]  = NOTE_FS4;
 
-    song.rythm [45]  = CROCHE_POINTEE;
-    song.notes [45]  = NOTE_B3;
+    song.rythm [45]  = NOIRE;
+    song.notes [45]  = NOTE_G4;
 
-    song.rythm [46]  = DOUBLE_CROCHE;
-    song.notes [46]  = NOTE_G3;
+    song.rythm [46]  = NOIRE;
+    song.notes [46]  = NOTE_E4;
 
-    song.rythm [47]  = CROCHE;
-    song.notes [47]  = NOTE_D3;
+    song.rythm [47]  = NOIRE;
+    song.notes [47]  = NOTE_D4;
 
-    song.rythm [48]  = DOUBLE_CROCHE;
-    song.notes [48]  = NOTE_D3;
+    song.rythm [48]  = NOIRE;
+    song.notes [48]  = NOTE_B3;
 
-    song.rythm [49]  = DOUBLE_CROCHE;
-    song.notes [49]  = NOTE_D3;
-
-    song.rythm [50]  = CROCHE;
-    song.notes [50]  = NOTE_DS3;
-
-    song.rythm [51]  = CROCHE;
-    song.notes [51]  = NOTE_D3;
-
-    song.rythm [52]  = CROCHE;
-    song.notes [52]  = SILENCE;
-
-    song.rythm [53]  = CROCHE;
-    song.notes [53]  = NOTE_FS3;
-
-    song.rythm [54]  = CROCHE;
-    song.notes [54]  = NOTE_G3;
+    song.rythm [49]  = NOIRE;
+    song.notes [49]  = NOTE_G3;
 
     // convertir les notes en milliseconde
     for (uint8_t i=0; i < MUSIC_SIZE; ++i)

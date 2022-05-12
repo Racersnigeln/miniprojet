@@ -13,7 +13,7 @@ CSRC += ./main.c \
 		./state.c \
 		./dance.c \
 		./flag_detection.c \
-		./obstacle.c \
+		./obstacle_detection.c \
 		./music.c \
 
 #Header folders to include

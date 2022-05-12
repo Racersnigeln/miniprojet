@@ -8,4 +8,4 @@ State get_robot_state(void);
 void start_state (void);
 
 
-#endif /*   STATE_H */
+#endif /* STATE_H */

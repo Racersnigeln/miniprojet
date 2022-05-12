@@ -1,17 +1,17 @@
 #ifndef MUSIC_H
 #define MUSIC_H
 
-#define NOTE_TO_MS 15000    // nbr_second_in_one_minute/NOIRE => 60000/4 
+#define NOTE_TO_MS 15000    // nbr_seconds_in_one_minute/NOIRE => 60000/4 
 
 #define SILENCE 0
 
-#define DOUBLE_CROCHE 1
-#define CROCHE 2 
-#define CROCHE_POINTEE 3
-#define NOIRE 4
-#define NOIRE_POINTEE 6
-#define BLANCHE 8
-#define RONDE 16
+#define DOUBLE_CROCHE   1
+#define CROCHE          2 
+#define CROCHE_POINTEE  3
+#define NOIRE           4
+#define NOIRE_POINTEE   6
+#define BLANCHE         8
+#define RONDE           16
 
 #define MUSIC_SIZE 55
 
@@ -24,8 +24,10 @@ Music NO_MUSIC (void);
 
 Music MARSEILLAISE (void);
 
-Music BELLA_CIAO (void) ;
+Music BELLA_CIAO (void);
 
-Music WII_THEME (void) ;
+Music WII_THEME (void);
 
-#endif /*   MUSIC_H */
+Music LA_DANSE_DES_CANARDS (void) ;
+
+#endif /* MUSIC_H */

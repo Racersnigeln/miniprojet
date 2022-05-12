@@ -1,39 +1,11 @@
-// #include <stdio.h>
-// #include <stdlib.h>
-// #include <string.h>
-// #include <math.h>
-
-#include "ch.h"
-#include "hal.h"
-#include "memory_protection.h"
-#include <usbcfg.h>
-#include <main.h>
-#include <motors.h>
-#include <camera/po8030.h>
-#include <chprintf.h>
-#include <sensors/proximity.h>
-#include <audio/audio_thread.h>
+#include <ch.h>
+#include <hal.h>
+#include <memory_protection.h>
 
 #include <flag_detection.h>
 #include <dance.h>
-#include <obstacle.h>
+#include <obstacle_detection.h>
 #include <state.h>
-
-static void serial_start(void)
-{
-	static SerialConfig ser_cfg = {
-	    115200,
-	    0,
-	    0,
-	    0,
-	};
-
-	sdStart(&SD3, &ser_cfg); // UART3.
-}
-
-messagebus_t bus;
-MUTEX_DECL(bus_lock);
-CONDVAR_DECL(bus_condvar);
 
 int main(void)
 {
@@ -41,25 +13,11 @@ int main(void)
     chSysInit();
     mpu_init();
 
-    // Start the serial communication
-    serial_start();
-
-    // Start the USB communication
-    usb_start();
-
+    // Initiate camera for flag detection
     init_camera();
 
-	motors_init();
-
-    // Init sound
-    dac_start();
-
-    // Init bus for IR-sensors
-    messagebus_init(&bus, &bus_lock, &bus_condvar);
-
-    // Init the proximity sensors
-    proximity_start();
-    calibrate_ir();
+    // Initiate the sensors for obstacle detection
+    init_obstacle_detection();
 
     // Start the thread for dance
     start_dance();
