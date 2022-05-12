@@ -84,11 +84,23 @@
         \label{fig:structure} % Pour référer à cette figure dans le texte
     \end{figure}
 
-    L'utilisateur tourne le selecteur (peu importe de combien de cran). La détection se fait en appellant la fonction \textbf{get$\_$selector} dans le thread \colorbox{yellow}{\textbf{ManagesStates}}, qui met ensuite l'état du robot à \textcolor{bleu}{FLAG$\_$DETECTION} ce qui a pour conséquence d'appeler la fonction \textbf{get$\_$flag} (\textcolor{vert}{flèche en vert}). \par
+    L'utilisateur tourne le selecteur (peu importe de combien de cran). 
+    La détection se fait en appellant la fonction \textbf{get$\_$selector} dans le thread \colorbox{yellow}{\textbf{ManagesStates}}, qui met ensuite l'état du robot à \textcolor{bleu}{FLAG$\_$DETECTION} ce qui a pour conséquence d'appeler la fonction \textbf{get$\_$flag} (\textcolor{vert}{flèche en vert}). \\ \par
     
-    A chaque appel de \textbf{get$\_$flag}, une image sur la caméra est capturée et on stocke une ligne de pixel dans la variable \textcolor{bleu}{pixel$\_$line}. On convertit chaque pixel de \textcolor{bleu}{pixel$\_$line} en un pixel de couleur (blanc, rouge, vert, bleu, indéfini) grâce à la fonction \textbf{get$\_$color} qu'on stocke ensuite dans \textcolor{bleu}{color$\_$line}. La fonction \textbf{extract$\_$color$\_$bands} s'occupe d'analyser \textcolor{bleu}{color$\_$line} (voir section \ref{extract_color_bands}) pour en extraire les grandes bandes de même couleur correspondant au drapeau présenté. Finalement, \textbf{extract$\_$flag} en déduit le drapeau et le retourne à \textbf{get$\_$flag}. \par
+    A chaque appel de \textbf{get$\_$flag}, une image sur la caméra est capturée et une ligne de pixel est stockée dans la variable \textcolor{bleu}{pixel$\_$line}. 
+    Chaque pixel de \textcolor{bleu}{pixel$\_$line} est ensuite convertit en une couleur (blanc, rouge, vert, bleu, indéfini) grâce à la fonction \textbf{get$\_$color}, puis stocké dans \textcolor{bleu}{color$\_$line}. 
+    La fonction \textbf{extract$\_$color$\_$bands} s'occupe d'analyser \textcolor{bleu}{color$\_$line} (voir section \ref{extract_color_bands}) pour en extraire les grandes bandes de même couleur correspondant au drapeau présenté. 
+    Finalement, \textbf{extract$\_$flag} en déduit le drapeau et le retourne à \textbf{get$\_$flag}. 
+    Si la fonction \textbf{get$\_$flag} n'a pas réussi à trouver le drapeau, elle continue de s'exécuter en boucle jusqu'à obtenir un drapeau connu pendant au maximum 10 secondes. 
+    Passé ce délai, le robot retourne dans l'état \textcolor{bleu}{WAIT}. \\ \par
     
-    Si la fonction \textbf{get$\_$flag} n'a pas résussi à trouver le drapeau, elle continue de s'exécuter en boucle jusqu'à obtenir un drapeau connu pendant au maximum 10 secondes. Passé ce délai, le robot retourne dans l'état \textcolor{bleu}{WAIT}. Lorsqu'un drapeau connu est enfin trouvé, le thread \colorbox{yellow}{\textbf{ManagesStates}} appelle la fonction \textbf{restart$\_$dance} qui réveille le thread \colorbox{yellow}{\textbf{Dance}} (\textcolor{red}{flèche en rouge}). En effet, la variable \textcolor{bleu}{is$\_$dancing} est initialisée à \textit{false} et inhibe le thread en le faisant simplement dormir dans une boucle de 100 ms. Lorsqu'elle passe à \textit{true}, celui-ci sort de son sommeil et commence à jouer la musique \textcolor{bleu}{current$\_$song} (remise au pays du drapeau détecté par \textbf{restart$\_$dance}). A chaque note jouée, les fonctions \textbf{change$\_$figure} et \textbf{dac$\_$play} sont appelée pour changer l'état des motors (de façon aléatoire) et jouer le son voulu, respectivement. De plus, la variable \textcolor{bleu}{music$\_$position} est incrémentée, celle-ci indiquant quelle note et rythme jouer en pointant sur la musique en cours.
+    Lorsqu'un drapeau connu est enfin trouvé, le thread \colorbox{yellow}{\textbf{ManagesStates}} appelle la fonction \textbf{restart$\_$dance} qui réveille le thread \colorbox{yellow}{\textbf{Dance}} (\textcolor{red}{flèche en rouge}). 
+    En effet, la variable \textcolor{bleu}{is$\_$dancing} est initialisée à \textit{false} et inhibe le thread en le faisant simplement dormir dans une boucle de 100 ms. 
+    Lorsqu'elle passe à \textit{true}, celui-ci sort de son sommeil et commence à jouer la musique \textcolor{bleu}{current$\_$song} (changée à la musique du pays détecté par \textbf{restart$\_$dance} grâce à une look up table). 
+    A chaque note jouée, les fonctions \textbf{change$\_$figure} et \textbf{dac$\_$play} sont appelée pour changer de mouvement de dance en activant de façon aléatoire les moteurs et jouer le son voulu, respectivement. 
+    De plus, la variable \textcolor{bleu}{music$\_$position} indiquant quelle note et rythme jouer de la structure \textcolor{bleu}{Music} est incrémentée. \\ \par
+    
+    A chaque appel de \colorbox{yellow}{\textbf{ManagesStates}}, \textbf{obstacle$\_$detected} est appelé pour vérifier qu'aucun obstacle n'obstrue le chemin du robot lorsqu'il danse. Si tel est le cas, le robot passe en mode \textcolor{bleu}{PAUSE}, ce qui a pour conséquence d'inhiber le thread \colorbox{yellow}{\textbf{Dance}} en le faisant retourner dans sa boucle de sommeil de 100 ms. Une fois l'obstacle enlevé, le robot continue sa danse en reprenant là où il s'était arrêté. Notons que l'état \textcolor{bleu}{PAUSE} n'affecte nullement la détection de drapeau puisqu'une fois que le robot est dans l'état \textcolor{bleu}{FLAG$\_$DETECTION}, il ne peut pas en sortir pendant 10 secondes, à moins de détecter un drapeau.
 
     \subsection{La fonction extract$\_$color$\_$bands}
     \label{extract_color_bands}
@@ -245,8 +257,8 @@
     \section{Points à améliorer}
     Il y a maintes points à améliorer afin d'augmenter la qualité du robot, dont les plus importants sont présentés ci-dessous.
 
-    \subsection{Créer une thread propre pour la détection d'obstacles}
-    En ce moment le robot vérifie l'absence d'obstacles en appellant une fonction au début de la thread qui gère les inputs et les états.
+    \subsection{Créer un thread propre pour la détection d'obstacles}
+    Dans l'état actuel des choses le robot vérifie l'absence d'obstacles en appellant une fonction au début du thread qui gère les inputs et les états.
     Par conséquent, un obstacle peut se présenter après cet appel, lorsque le robot est occupé par d'autres tâches, sans causer un arrêt d'activité.
     Cela se produit par exemple pendant la détection des drapeaux où le robot est bloqué dans une boucle.
 
@@ -265,5 +277,23 @@
     Le robot pourrait donc être capable de détecter une couleur à un moment donné, or incapable quelques mètres à côté ou un certain temps après.
     De sorte d'y prévenir un système qui prends en compte la luminosité ambiante pourrait être mis en place.
     Sous supposition que les valeurs RGB sont représentées sur la même échelle, c'est à dire le même nombre de bits, le pourcentage dont une valeur dépasse les autres pourrait être analysé par exemple. 
+    
+    \subsection{Optimiser l'utilisation de mémoire des pièces de musique}
+    La manière dont les pièces de musique sont codées dans ce projet signifie que chacune entre-elles utilise $55 \cdot 4 = 220$ octets.
+    Cela est due au fait que la structure \texttt{Music} qui gère la musique
+    
+    \subsection{Autres points mineurs}
+    Le robot a certains comportements qui pourraient être codés différemment.
+    Il ne s'agit pas de rectifier des problèmes, mais de faire un choix de préférence.
+    En voici un liste non-exhaustive ci-dessous : 
+    \begin{enumerate}
+        \item Les LEDs qui indique qu'un obstacle bloque le chemin pourraient aussi indiquer où est l'obstacle.
+        Par exemple le robot pourrait allumer le LED au front si l'obstacle se situe en face de lui.
+        \item Le robot pourrait danser une danse prédéfinie pour chaque pièce de musique au lieu d'en danser une pseudo-aléatoire.
+        \item Le robot pourraient aussi détecter les tricolores verticales au lieu de ne détecter que les tricolores horizontales, ce qui est le cas au moment de la rédaction.
+        \item Plus de pays pourraient être ajoutés si la mémoire le permet.
+    \end{enumerate}
+    
+    
 
 \end{document}
