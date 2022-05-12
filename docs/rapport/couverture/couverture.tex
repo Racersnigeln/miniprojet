@@ -1,0 +1,68 @@
+\documentclass{article}
+\usepackage[a4paper, margin=0mm]{geometry}
+\usepackage[usenames, dvipsnames]{xcolor}
+\usepackage{tikz}
+\usetikzlibrary{positioning, calc}
+
+\usepackage{fontspec}
+\newfontfamily\mono{UbuntuMono-R.ttf}
+
+\usepackage{listings}
+\lstset
+{
+    language=C,
+    basicstyle=\mono\color{White},
+    keywordstyle=\color{RoyalBlue},
+    identifierstyle=\color{Plum},
+    stringstyle=\color{Tan},
+    commentstyle=\color{OliveGreen},
+    directivestyle=\color{Tan},
+    showstringspaces=false
+}
+
+\newcommand{\rslisting}[4]{\rotatebox[origin=c]{#1}{\scalebox{#2}{\lstinputlisting[identifierstyle=\color{#3}]{./../../../#4}}}}
+
+\begin{document}
+    \begin{tikzpicture}[remember picture,overlay]
+        \fill[fill=darkgray] (current page.north west) rectangle (current page.south east);
+        \node () at (20,0) {\rslisting{15}{1}{Aquamarine}{src/flag_detection.c}};
+        \node () at (11,16) {\rslisting{0}{0.5}{Aquamarine}{src/flag_detection.c}};
+        
+        \node () at (8,6) {\rslisting{-6}{1}{Plum}{src/music.c}};
+        \node () at (0,-15) {\rslisting{10}{1}{Plum}{src/music.c}};
+     
+        \node () at (20,0) {\rslisting{15}{1}{Aquamarine}{src/flag_detection.c}};
+        \node () at (11,0) {\rslisting{20}{1}{Plum}{src/music.c}};
+        \node () at (11,0) {\rslisting{20}{1.5}{BurntOrange}{src/main.c}};
+        \node () at (15,-15) {\rslisting{-20}{2}{Tan}{src/state.c}};
+        \node () at (8,5) {\rslisting{0}{1.2}{Emerald}{src/obstacle_detection.c}};
+        \node () at (20,-20) {\rslisting{-45}{1.2}{Emerald}{src/dance.c}};
+    \end{tikzpicture}
+    
+    \vspace*{\fill}
+        \begin{center}
+            \begin{tikzpicture}[remember picture, overlay]
+                \fill[color = white, opacity = 0.9, rounded corners = 2ex] (-10,5) rectangle (10,-5);
+                \node (titre) at (0,0)
+                    {
+                        \begin{tabular}{c}
+                            \hline
+                            \\
+                            \huge\it Les aventures incroyables de \\
+                            \\
+                            \Huge\bf Jean-Bot Baptiste I\\
+                            \\
+                            \huge\it Le raccourceur des circuits\\
+                            \\
+                            \hline
+                        \end{tabular}
+                    };
+                \node[left]  at ($(titre.west)-(0.2,0)$) {\includegraphics[width=5cm]{../images/kawwai.pdf}};
+                \node[right] at ($(titre.east)+(0.2,0)$) {\scalebox{-1}[1]{\includegraphics[width=5cm]{../images/kawwai.pdf}}};
+                \node[above] at (titre.north) {\textbf{\large MICRO-315 Miniprojet}};
+                \node[below] at (titre.south) {\textit{\large Un projet de robotique de Julian Donevsky et Olof Lissmats}};
+            \end{tikzpicture}
+        \end{center}
+        \vspace{5cm}
+        \vspace*{\fill}
+\end{document}
