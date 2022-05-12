@@ -1,7 +1,8 @@
 #include <ch.h>
 #include <hal.h>
 
-#include <motors.h>             // For dancing
+#include <stdlib.h>				// For pseudo-random numbers
+#include <motors.h>             // For moving robot while dancing
 #include <audio/audio_thread.h> // For playing sound
 #include <flag_detection.h>     // For Flag type
 #include <state.h>              // To get access to current state

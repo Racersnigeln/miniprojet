@@ -272,7 +272,7 @@ Flag get_flag(void)
     
 	// Detect the colors of the pixel line
 	Color color_line [IMAGE_BUFFER_SIZE] = {UNDEFINED_COLOR};
-	for (uint16_t i; i < IMAGE_BUFFER_SIZE; i++)
+	for (uint16_t i = 0; i < IMAGE_BUFFER_SIZE; i++)
 	{
 		color_line [i] = get_color(pixel_line [i]);
 	}
