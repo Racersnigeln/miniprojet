@@ -52,6 +52,8 @@ static THD_FUNCTION(ManageStates, arg)
                 }
                 
                 ROBOT_STATE = (country == UNDEFINED_FLAG) ? WAIT : DANCE;
+                // Prevent double detection of flag if selector turned more than one step
+                last_selector = get_selector();
                 set_body_led(0);
             }
             if ( ROBOT_STATE == DANCE )
