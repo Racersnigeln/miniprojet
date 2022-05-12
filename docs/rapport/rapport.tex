@@ -1,19 +1,21 @@
 \documentclass{article}
 \usepackage[a4paper, margin=2.5cm, headheight=13pt]{geometry}
+\usepackage[T1]{fontenc}
 \usepackage[french]{babel}
 \usepackage{fancyhdr}
+\usepackage{xurl}
+
+% Figures
 \usepackage{tikz}
 \usepackage{xcolor}
 \usetikzlibrary{positioning, calc}
 \usepackage{graphicx}
+\usepackage{caption}
+\usepackage{subcaption}
 
 %define_color
 \definecolor{bleu}{rgb}{0,0.52,1}
 \definecolor{vert}{rgb}{0.45,0.82,0}
-
-% Subfigures
-\usepackage{caption}
-\usepackage{subcaption}
 
 % Définir la pagination etc.
 \pagestyle{fancy}
@@ -51,8 +53,8 @@
                             \hline
                         \end{tabular}
                     };
-                \node[left]  at (titre.west) {\includegraphics[width=5cm]{images/kawwai.pdf}};
-                \node[right] at (titre.east) {\scalebox{-1}[1]{\includegraphics[width=5cm]{images/kawwai.pdf}}};
+                \node[left]  at ($(titre.west)-(0.5,0)$) {\includegraphics[width=5cm]{images/kawwai.pdf}};
+                \node[right] at ($(titre.east)+(0.5,0)$) {\scalebox{-1}[1]{\includegraphics[width=5cm]{images/kawwai.pdf}}};
                 \node[above] at (titre.north) {\textbf{\large MICRO-315 Miniprojet}};
                 \node[below] at (titre.south) {\textit{\large Un projet de robotique de Julian Donevsky et Olof Lissmats}};
             \end{tikzpicture}
@@ -64,6 +66,12 @@
     \thispagestyle{empty}
 
     \tableofcontents
+    
+    \vfill
+    
+    \noindent Illustration de couverture : Julian Donevsky et Olof Lissmats
+    
+    \noindent Chat de décoration : NicePNG, Better Cats Drawing Pictures Wealth How To Draw A Cute - Cat Drawing, téléchargé le 12 mai 2022, <\url{https://www.nicepng.com/ourpic/u2w7a9a9i1y3q8t4_better-cats-drawing -pictures-wealth-how-to-draw/}>
 
     \newpage
 
@@ -79,7 +87,7 @@
     
     \subsection{Schéma général du programme}
     \begin{figure}[!ht]
-        \includegraphics[scale=0.75]{images/code-structure.pdf}
+        \noindent\makebox[\textwidth]{\includegraphics[scale=0.75]{images/code-structure.pdf}}
         \caption{Schéma général du programme. En jaune les threads, en noir les fonctions et en bleu (rouge dans le cas de country) les variables utiles au bon déroulement du programme.}
         \label{fig:structure} % Pour référer à cette figure dans le texte
     \end{figure}
@@ -262,9 +270,9 @@
     Par conséquent, un obstacle peut se présenter après cet appel, lorsque le robot est occupé par d'autres tâches, sans causer un arrêt d'activité.
     Cela se produit par exemple pendant la détection des drapeaux où le robot est bloqué dans une boucle.
 
-    L'ajout d'une thread comlètement dédiée à la détection d'obstacle permettrait d'y réagir à chaque instant.
+    L'ajout d'une thread complètement dédiée à la détection d'obstacle permettrait d'y réagir à chaque instant.
     En revanche cela impliquerait aussi une nécessité de faire communiquer cette thread avec les autres, c'est à dire introduire plus de variables globales.
-    La raison pour laquelle cela n'est pas encore fait est une manque de temps et la reorganisation du code nécessaire.
+    La raison pour laquelle cela n'est pas encore fait est une manque de temps et la réorganisation du code nécessaire.
 
     \subsection{Rendre la détection de couleurs plus fiable}
     La caméra du robot fournit une image de 640 fois 480 pixels sous le format RGB565.
@@ -280,7 +288,7 @@
     
     \subsection{Optimiser l'utilisation de mémoire des pièces de musique}
     La manière dont les pièces de musique sont codées dans ce projet signifie que chacune entre-elles utilise $55 \cdot 4 = 220$ octets.
-    Cela est due au fait que la structure \texttt{Music} qui gère la musique
+    Cela est due au fait que la structure \texttt{Music} qui gère la musique 
     
     \subsection{Autres points mineurs}
     Le robot a certains comportements qui pourraient être codés différemment.
