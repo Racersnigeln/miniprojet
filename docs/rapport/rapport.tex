@@ -92,6 +92,7 @@
     Ceci est complètement maîtrisé, lorsque le robot est en train de détecter le drapeau, il ne doit faire que cela; c'est pourquoi le thread \colorbox{yellow}{\textbf{ManagesStates}} ne rend la main à aucun moment durant ce laps de temps.
 
     \subsection{La fonction extract$\_$color$\_$bands}
+    \label{extract_color_bands}
     Voici une explication de la fonction \textbf{extract$\_$color$\_$bands} qui est au coeur de l'analyse de l'image pour la détection du drapeau. Elle permet entre autre de s'affranchir du bruit de la caméra et autres imperfections liée à la détection des couleurs.
     \label{color_line_step1}
     \begin{figure}[!h] %{\textwidth}
@@ -269,8 +270,10 @@
     A cause des reflets et du changement de luminosité, il était quasiment impossible de paramétrer la détection de couleur pour qu'elle fonctionne à tous les coups, c'est pourquoi nous utilisons maintenant un écran comme support pour les drapeaux.
     
     \subsection{Détacher les notes de musiques qui se répètent}
+    Lors des premiers tests musicaux, nous avons remarqué que le robot ne détachait pas 2 notes identiques consécutives. Nous avons dû donc modifier le thread \colorbox{yellow}{\textbf{Dance}} pour qu'il arrête de jouer une note quelques millisecondes avant de jouer la suivante sans toutefois s'arrêter de danser. Cependant, un problème subsistait: lorsque la musique était finie ou bien lorsqu'une note très rapide devait être jouée, le programme plantait. En effet, le robot devait s'arrêter de jouer la note avant même de l'avoir commencée. Nous avons dû donc ajouter une condition à ce détachement de note, qui fonctionne maintenant très bien sans poser de problème.
     
     \subsection{Créer une fonction qui retourne un array}
+    La fonction \textbf{extract$\_$color$\_$bands} expliquée dans la section \ref{extract_color_bands} doit retourner un array de \textit{Color}. En C++, il suffit de passer l'argument en référence puis de le modifier dans la fonction, mais cela n'est pas possible en C. C'est pourquoi nous avons dû faire usage de pointeur pour corriger cela.
     
     \section{Points à améliorer}
     Il y a plusieurs points à améliorer afin d'optimiser notre programme si nous avions eu plus de temps.
@@ -307,9 +310,9 @@
     En voici un liste non-exhaustive ci-dessous : 
     \begin{enumerate}
         \item Les LEDs qui indique qu'un obstacle bloque le chemin pourraient aussi indiquer où est l'obstacle.
-        Par exemple le robot pourrait allumer le LED au front si l'obstacle se situe en face de lui.
+        Par exemple le robot pourrait allumer le LED de devant si l'obstacle se situe en face de lui.
         \item Le robot pourrait danser une danse prédéfinie pour chaque pièce de musique au lieu d'en danser une pseudo-aléatoire.
-        \item Le robot pourraient aussi détecter les tricolores verticales au lieu de ne détecter que les tricolores horizontales, ce qui est le cas au moment de la rédaction.
+        \item Améliorer la variété des drapeau détectables, par exemple en ajoutant plus de couleurs possible ou bien permettre de détecter les tricolores verticales au lieu de ne détecter que les tricolores horizontales, ce qui est le cas au moment de la rédaction.
         \item Plus de pays pourraient être ajoutés si la mémoire le permet.
     \end{enumerate}
     
