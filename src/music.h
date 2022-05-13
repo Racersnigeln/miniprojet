@@ -11,13 +11,12 @@
 #define NOIRE           4
 #define NOIRE_POINTEE   6
 #define BLANCHE         8
-#define RONDE           16
 
 #define MUSIC_SIZE 55
 
 typedef struct {
-  uint16_t rythm [MUSIC_SIZE] ;     //en ms
-  uint16_t notes [MUSIC_SIZE] ;     //en freq (voir play_melody.h pour les notes)
+  uint16_t rythm [MUSIC_SIZE] ;     //in ms
+  uint16_t notes [MUSIC_SIZE] ;     //in frequence (see play_melody.h for the notes)
 } Music; 
 
 Music NO_MUSIC (void);

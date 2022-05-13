@@ -128,6 +128,8 @@ static THD_FUNCTION(Dance, arg)
 
     while(1)
     {
+    	// the robot turns back into the WAIT state right after the dance has started
+    	// and we don't want him to dance when he's in FLAG_DETECTION or PAUSE state
         if ( (is_dancing) & (get_robot_state() == WAIT) )
         {
             time = chVTGetSystemTime();
@@ -144,7 +146,7 @@ static THD_FUNCTION(Dance, arg)
                 // 1) We want to not dance and not play notes when 
                 //    there is a silence in the music
                 // 2) If the size of the song is less than 55, 
-                //    we want to stop playing before the 55th note.
+                //    we want to stop playing and dancing before the 55th note.
 
                 // Stop playing and dancing
                 dac_stop();

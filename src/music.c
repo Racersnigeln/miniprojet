@@ -182,7 +182,7 @@ Music MARSEILLAISE (void)
     song.rythm [54]  = CROCHE;
     song.notes [54]  = NOTE_G3;
     
-    // convertir les notes en milliseconde
+    // converts the rythms into milliseconds
     for (uint8_t i=0; i < MUSIC_SIZE; ++i)
     {
         song.rythm [i] *= NOTE_TO_MS / tempo ;
@@ -326,7 +326,7 @@ Music BELLA_CIAO (void)
     song.rythm [42]  = BLANCHE;
     song.notes [42]  = NOTE_A3;
     
-    // convertir les notes en milliseconde
+    // converts the rythms into milliseconds
     for (uint8_t i=0; i < MUSIC_SIZE; ++i)
     {
         song.rythm [i] *= NOTE_TO_MS / tempo ;
@@ -506,7 +506,7 @@ Music WII_THEME (void)
     song.rythm [54]  = CROCHE;
     song.notes [54]  = NOTE_A4;
 
-    // convertir les notes en milliseconde
+    // converts the rythms into milliseconds
     for (uint8_t i=0; i < MUSIC_SIZE; ++i)
     {
         song.rythm [i] *= NOTE_TO_MS / tempo ;
@@ -671,7 +671,7 @@ Music LA_DANSE_DES_CANARDS (void)
     song.rythm [49]  = NOIRE;
     song.notes [49]  = NOTE_G3;
 
-    // convertir les notes en milliseconde
+    // converts the rythms into milliseconds
     for (uint8_t i=0; i < MUSIC_SIZE; ++i)
     {
         song.rythm [i] *= NOTE_TO_MS / tempo ;

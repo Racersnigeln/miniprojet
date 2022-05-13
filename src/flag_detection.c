@@ -8,6 +8,7 @@
 #define IMAGE_BUFFER_SIZE 640
 
 // Constants for the function get_color
+// See figure 7 from TP4
 #define RED_MASK			0xF800
 #define GREEN_MASK			0x07E0
 #define BLUE_MASK			0x001F
@@ -15,6 +16,8 @@
 #define GREEN_BIT_OFFSET	5
 #define BLUE_BIT_OFFSET		0
 
+// Red and blue are stored on 5 bits, green is stored on 6 bits
+// therefore we want the results to be stored on a scale from 0 to 255
 #define RED_CORRECTION	 	8
 #define GREEN_CORRECTION 	4
 #define BLUE_CORRECTION 	8
@@ -42,7 +45,7 @@ void init_camera(void)
 
 Color get_color(uint16_t pixel)
 {
-	// Isolate and set all colours to the scale 0-255
+	// Isolate and set all colors to the scale 0-255
 	uint8_t red   = ((pixel & RED_MASK)   >> RED_BIT_OFFSET)   * RED_CORRECTION;
 	uint8_t green = ((pixel & GREEN_MASK) >> GREEN_BIT_OFFSET) * GREEN_CORRECTION;
 	uint8_t blue  = ((pixel & BLUE_MASK)  >> BLUE_BIT_OFFSET)  * BLUE_CORRECTION;
@@ -277,7 +280,7 @@ Flag get_flag(void)
 		color_line [i] = get_color(pixel_line [i]);
 	}
 	
-	// Extract general band of colors from color_line
+	// Extract general bands of colors from color_line
 	Color color_bands [MAX_NUM_COLOR_BANDS] = {UNDEFINED_COLOR};
 	extract_color_bands (color_bands, color_line);
 	
