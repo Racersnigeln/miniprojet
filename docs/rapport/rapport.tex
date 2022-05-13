@@ -16,6 +16,7 @@
 %define_color
 \definecolor{bleu}{rgb}{0,0.52,1}
 \definecolor{vert}{rgb}{0.45,0.82,0}
+\definecolor{violet}{rgb}{0.51,0.13,0.55}
 
 % Définir la pagination etc.
 \pagestyle{fancy}
@@ -85,9 +86,13 @@
     A chaque note jouée, les fonctions \textbf{change$\_$figure} et \textbf{dac$\_$play} sont appelée pour changer de mouvement de dance en activant de façon aléatoire les moteurs et jouer le son voulu, respectivement. 
     De plus, la variable \textcolor{bleu}{music$\_$position} indiquant quelle note et rythme jouer de la structure \textcolor{bleu}{Music} est incrémentée. \\ \par
     
-    A chaque appel de \colorbox{yellow}{\textbf{ManagesStates}}, \textbf{obstacle$\_$detected} est appelé pour vérifier qu'aucun obstacle n'obstrue le chemin du robot lorsqu'il danse. Si tel est le cas, le robot passe en mode \textcolor{bleu}{PAUSE}, ce qui a pour conséquence d'inhiber le thread \colorbox{yellow}{\textbf{Dance}} en le faisant retourner dans sa boucle de sommeil de 100 ms. Une fois l'obstacle enlevé, le robot continue sa danse en reprenant là où il s'était arrêté. Notons que l'état \textcolor{bleu}{PAUSE} n'affecte nullement la détection de drapeau puisqu'une fois que le robot est dans l'état \textcolor{bleu}{FLAG$\_$DETECTION}, il ne peut pas en sortir pendant 10 secondes, à moins de détecter un drapeau.
+    A chaque appel de \colorbox{yellow}{\textbf{ManagesStates}}, \textbf{obstacle$\_$detected} est appelé pour vérifier qu'aucun obstacle n'obstrue le chemin du robot lorsqu'il danse. 
+    Si tel est le cas, le robot passe en mode \textcolor{bleu}{PAUSE}, ce qui a pour conséquence d'inhiber le thread \colorbox{yellow}{\textbf{Dance}} en le faisant retourner dans sa boucle de sommeil de 100 ms (\textcolor{violet}{flèche en violet}). 
+    Une fois l'obstacle enlevé, le robot continue sa danse en reprenant là où il s'était arrêté. Notons que l'état \textcolor{bleu}{PAUSE} n'affecte nullement la détection de drapeau car lorsque que le robot est dans l'état \textcolor{bleu}{FLAG$\_$DETECTION}, il ne peut pas en sortir pendant 10 secondes, à moins de détecter un drapeau.
+    Ceci est complètement maîtrisé, lorsque le robot est en train de détecter le drapeau, il ne doit faire que cela; c'est pourquoi le thread \colorbox{yellow}{\textbf{ManagesStates}} ne rend la main à aucun moment durant ce laps de temps.
 
     \subsection{La fonction extract$\_$color$\_$bands}
+    Voici une explication de la fonction \textbf{extract$\_$color$\_$bands} qui est au centre de l'analyse de l'image pour la détection du drapeau. Elle permet entre autre de s'affranchir du bruit de la caméra et autres imperfections liée à la détection des couleurs.
     \label{extract_color_bands}
     \begin{figure}[!ht]
         \centering
