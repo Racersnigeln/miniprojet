@@ -1,18 +1,15 @@
 #ifndef DANCE_H
 #define DANCE_H
 
-#include <flag_detection.h> // For Flag type
-#include <music.h>          // For Music type
+// Not all functions are declared here, 
+// only the ones that should be usable elsewhere
 
-Music LUT_flag_to_music (Flag country);
+#include <flag_detection.h> // For Flag type
 
 void restart_dance(Flag country);
-
-void change_figure(void);
 
 void start_dance(void);
 
 void stop_dancing(void);
-
 
 #endif /* DANCE_H */
