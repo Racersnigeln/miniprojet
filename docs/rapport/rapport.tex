@@ -7,7 +7,6 @@
 
 % Figures
 \usepackage{tikz}
-\usepackage{xcolor}
 \usetikzlibrary{positioning, calc}
 \usepackage{graphicx}
 \usepackage{caption}
@@ -302,7 +301,22 @@
     Sous supposition que les valeurs RGB sont représentées sur la même échelle, c'est à dire le même nombre de bits, le pourcentage dont une valeur dépasse les autres pourrait être analysé par exemple. 
     
     \subsection{Optimiser l'utilisation de mémoire des pièces de musique}
-    Tous les morceaux de notre robot sont stockés sur $55 \cdot 4 = 220$ bytes. Si nous avions décidé de créer un morceau beaucoup plus long que les autres, nous aurions été obligés d'augmenter la taille en mémoire de tous les autres morceaux, ce qui n'est pas optimal. Une manière de corriger le problème aurait été de faire de l'allocation dynamique de mémoire plutôt que d'utiliser une structure fixe. Malheureusement, ceci est assez difficile en C. Nous aurions aussi pu utiliser des pointeurs mais ils peuvent créer des fuites de mémoires s'ils ne sont pas très bien gérer. Nous avons opté sur l'utilisation d'arrays, une solution plus simple mais moins efficace.
+    Tous les morceaux de notre robot sont stockés dans une propre instance d'une structure appelée \texttt{Music} mesurant $55 \cdot 4 = 220$ bytes. 
+    Si nous avions décidé de créer un morceau beaucoup plus long que les autres, nous aurions été obligés d'augmenter la taille en mémoire de cette structure, et ainsi de tous les autres morceaux aussi, ce qui n'est pas optimal. 
+    Une manière de corriger le problème aurait été de faire de l'allocation dynamique de mémoire plutôt que d'utiliser une structure fixe. 
+    Malheureusement, ceci est assez difficile en C. 
+    Nous aurions aussi pu utiliser des pointeurs mais ils peuvent créer des fuites de mémoires à moins qu'ils ne soient pas très bien gérés. 
+    Nous avons opté sur l'utilisation d'arrays, une solution plus simple mais moins efficace.
+    
+    \subsection{Morceaux de musique calculés durant la compilation}
+    Comme indiqué précédemment le robot a besoin d'une structure \texttt{Music} mesurant 220 bytes pour danser, et le contenu de cette structure varie selon le drapeau détecté.
+    De sorte d'y pouvoir accéder dans le thread gérant la danse, la fonction \texttt{LUT\_flag\_to\_country()} a été programmé.
+    Celle-ci prend le drapeau comme argument et appelle une fonction propre à chaque drapeau qui retourne le bon \texttt{Music}.
+    Le \texttt{Music} est ensuite retourné par \texttt{LUT\_flag\_to\_country()}.
+    
+    Le problème est que les fonctions propre à chacun des drapeaux calculent le contenu du \texttt{Music} à tout appel bien qu'il soit constant.
+    Par exemple le même \texttt{Music} est retourné chaque fois que le drapeau de la Suisse est détecté.
+    
     
     \subsection{Autres points mineurs}
     Le robot a certains comportements qui pourraient être codés différemment.
