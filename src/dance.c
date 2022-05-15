@@ -124,11 +124,11 @@ static THD_FUNCTION(Dance, arg)
     systime_t time;
 
     // Small offset time to detach notes
-    const systime_t note_offset = 20 ;    
+    const systime_t note_offset = 20;    
 
     while(1)
     {
-    	// the robot turns back into the WAIT state right after the dance has started
+    	// The robot turns back into the WAIT state right after the dance has started
     	// and we don't want him to dance when he's in FLAG_DETECTION or PAUSE state
         if ( (is_dancing) & (get_robot_state() == WAIT) )
         {

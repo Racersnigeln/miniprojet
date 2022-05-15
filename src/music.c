@@ -679,8 +679,3 @@ Music LA_DANSE_DES_CANARDS (void)
 
     return song ;
 }
-
-
-
-
-
