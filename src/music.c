@@ -3,27 +3,7 @@
 
 #include <dance.h>              // For Music type 
 #include <audio/play_melody.h>  // For definition of notes
-#include <flag_detection.h>     // For Flag type
 #include <music.h>
-
-#define SILENCE 0
-
-#define DOUBLE_CROCHE   1
-#define CROCHE          2 
-#define CROCHE_POINTEE  3
-#define NOIRE           4
-#define NOIRE_POINTEE   6
-#define BLANCHE         8
-
-#define NOTE_TO_MS 15000    // nbr_seconds_in_one_minute/NOIRE => 60000/4
-
-// Static variables need const initialization
-// The real values are assigned in init_songs()
-static Music no_music;
-static Music marseillaise;
-static Music bella_ciao;
-static Music wii_theme;
-static Music la_danse_des_canards;
 
 Music NO_MUSIC (void)
 {
@@ -700,33 +680,7 @@ Music LA_DANSE_DES_CANARDS (void)
     return song ;
 }
 
-Music LUT_flag_to_music (Flag country) 
-{
-    // Look up table for the songs of the countries
-    if (country == FRANCE)
-    {
-        return marseillaise;
-    }
-    else if (country == ITALY)
-    {
-        return bella_ciao;
-    }
-    else if (country == JAPAN)
-	{
-		return wii_theme;
-	}
-    else if (country == SWITZERLAND)
-	{
-		return la_danse_des_canards;
-	}
-    return no_music;
-}
 
-void init_songs(void)
-{
-    no_music = NO_MUSIC();
-    marseillaise = MARSEILLAISE();
-    bella_ciao = BELLA_CIAO();
-    wii_theme = WII_THEME();
-    la_danse_des_canards = LA_DANSE_DES_CANARDS();
-}
+
+
+

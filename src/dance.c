@@ -16,7 +16,7 @@
 #define DANCE_SPEED     CM_PER_S*SPEED_TO_STEPS
 
 // Variables for the thread Dance
-static uint8_t music_position = 0;
+static uint16_t music_position = 0;
 static Music current_song;
 static bool is_dancing = false;
 
@@ -82,6 +82,32 @@ void change_figure(void)
     }
 }
 
+Music LUT_flag_to_music (Flag country) 
+{
+    // Look up table for the songs of the countries
+    if (country == UNDEFINED_FLAG)
+    {
+        return NO_MUSIC();
+    }
+    else if (country == FRANCE)
+    {
+        return MARSEILLAISE();
+    }
+    else if (country == ITALY)
+    {
+        return BELLA_CIAO();
+    }
+    else if (country == JAPAN)
+	{
+		return WII_THEME();
+	}
+    else if (country == SWITZERLAND)
+	{
+		return LA_DANSE_DES_CANARDS();
+	}
+    return NO_MUSIC();
+}
+
 void restart_dance(Flag country)
 {
     music_position = 0;
@@ -98,11 +124,11 @@ static THD_FUNCTION(Dance, arg)
     systime_t time;
 
     // Small offset time to detach notes
-    const systime_t note_offset = 20;    
+    const systime_t note_offset = 20 ;    
 
     while(1)
     {
-    	// The robot turns back into the WAIT state right after the dance has started
+    	// the robot turns back into the WAIT state right after the dance has started
     	// and we don't want him to dance when he's in FLAG_DETECTION or PAUSE state
         if ( (is_dancing) & (get_robot_state() == WAIT) )
         {
@@ -152,7 +178,6 @@ static THD_FUNCTION(Dance, arg)
 
 void start_dance(void)
 {
-    init_songs();
     motors_init();
     dac_start();
 	chThdCreateStatic(waDance, sizeof(waDance), NORMALPRIO, Dance, NULL);
