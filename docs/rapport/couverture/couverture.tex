@@ -39,31 +39,4 @@
         \node () at (8,5) {\rslisting{0}{1.2}{Emerald}{src/obstacle_detection.c}};
         \node () at (20,-20) {\rslisting{-45}{1.2}{Emerald}{src/dance.c}};
     \end{tikzpicture}
-    
-    \vspace*{\fill}
-        \begin{center}
-            \begin{tikzpicture}[remember picture, overlay]
-                \fill[color = white, opacity = 0.85, rounded corners = 2ex] (-10,5) rectangle (10,-5);
-                \node (titre) at (0,0)
-                    {
-                        \begin{tabular}{c}
-                            \hline
-                            \\
-                            \huge\it Les aventures incroyables de \\
-                            \\
-                            \Huge\bf Jean-Bot Baptiste I\\
-                            \\
-                            \huge\it Le raccourceur des circuits\\
-                            \\
-                            \hline
-                        \end{tabular}
-                    };
-                \node[left]  at ($(titre.west)-(0.2,0)$) {\includegraphics[width=5cm]{../images/kawwai.pdf}};
-                \node[right] at ($(titre.east)+(0.2,0)$) {\scalebox{-1}[1]{\includegraphics[width=5cm]{../images/kawwai.pdf}}};
-                \node[above] at (titre.north) {\textbf{\large MICRO-315 Miniprojet}};
-                \node[below] at (titre.south) {\textit{\large Un projet de robotique de Julian Donevsky et Olof Lissmats}};
-            \end{tikzpicture}
-        \end{center}
-        \vspace{5cm}
-        \vspace*{\fill}
 \end{document}

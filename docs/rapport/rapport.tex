@@ -12,6 +12,11 @@
 \usepackage{caption}
 \usepackage{subcaption}
 
+% Références
+\usepackage{csquotes}
+\usepackage{biblatex}
+\addbibresource{ref.bib}
+
 %define_color
 \definecolor{bleu}{rgb}{0,0.52,1}
 \definecolor{vert}{rgb}{0.45,0.82,0}
@@ -32,12 +37,42 @@
     \end{tikzpicture}
 }
 
+\newcommand{\state}{\colorbox{yellow}{\textbf{ManagesStates}}}
+\newcommand{\dance}{\colorbox{yellow}{\textbf{Dance}}}
+
 \begin{document}
     \begin{titlepage}
-    \begin{tikzpicture}[remember picture, overlay]
-        \node[] () at (current page.center) {\includegraphics[width=\paperwidth]{couverture/couverture.pdf}};
-    \end{tikzpicture}
+        \begin{tikzpicture}[remember picture, overlay]
+            \node[] () at (current page.center) {\includegraphics[width=\paperwidth]{couverture/couverture.pdf}};
+        \end{tikzpicture}
         
+        \vspace*{\fill}
+        
+        \begin{center}
+            \begin{tikzpicture}[remember picture, overlay]
+                \fill[color = white, opacity = 0.85, rounded corners = 2ex] (-10,5) rectangle (10,-5);
+                \node (titre) at (0,0)
+                    {
+                        \begin{tabular}{c}
+                            \hline
+                            \\
+                            \huge\it Les aventures incroyables de \\
+                            \\
+                            \Huge\bf Jean-Bot I$^\textbf{\Large er}$ \\
+                            \\
+                            \huge\it Le raccourceur de circuits\\
+                            \\
+                            \hline
+                        \end{tabular}
+                    };
+                \node[above] at (titre.north) {\textbf{\large MICRO-315 Miniprojet}};
+                \node[below] at (titre.south) {\textit{\large Un projet de robotique de Julian Donevsky et Olof Lissmats}};
+            \end{tikzpicture}
+        \end{center}
+        
+        \vspace{5cm}
+        
+        \vspace*{\fill}
     \end{titlepage}
 
     \thispagestyle{empty}
@@ -64,7 +99,7 @@
     
     \subsection{Schéma général du programme}
     \begin{figure}[!ht]
-        \noindent\makebox[\textwidth]{\includegraphics[scale=0.75]{images/code-structure.pdf}}
+        \includegraphics[scale=0.7]{images/code-structure.pdf}
         \caption{Schéma général du programme. En jaune les threads, en noir les fonctions et en bleu (rouge dans le cas de country) les variables utiles au bon déroulement du programme.}
         \label{fig:structure} % Pour référer à cette figure dans le texte
     \end{figure}
@@ -72,29 +107,43 @@
     L'utilisateur tourne le selecteur (peu importe de combien de cran). 
     La détection se fait en appellant la fonction \textbf{get$\_$selector} dans le thread \colorbox{yellow}{\textbf{ManagesStates}}, qui met ensuite l'état du robot à \textcolor{bleu}{FLAG$\_$DETECTION} ce qui a pour conséquence d'appeler la fonction \textbf{get$\_$flag} (\textcolor{vert}{flèche en vert}). \\ \par
     
-    A chaque appel de \textbf{get$\_$flag}, une image sur la caméra est capturée et une ligne de pixel est stockée dans la variable \textcolor{bleu}{pixel$\_$line}. 
-    Chaque pixel de \textcolor{bleu}{pixel$\_$line} est ensuite convertit en une couleur (blanc, rouge, vert, bleu, indéfini) grâce à la fonction \textbf{get$\_$color}, puis stocké dans \textcolor{bleu}{color$\_$line}. 
-    La fonction \textbf{extract$\_$color$\_$bands} s'occupe d'analyser \textcolor{bleu}{color$\_$line} (voir section \ref{extract_color_bands}) pour en extraire les grandes bandes de même couleur correspondant au drapeau présenté. 
-    Finalement, \textbf{extract$\_$flag} en déduit le drapeau et le retourne à \textbf{get$\_$flag}. 
-    Si la fonction \textbf{get$\_$flag} n'a pas réussi à trouver le drapeau, elle continue de s'exécuter en boucle jusqu'à obtenir un drapeau connu pendant au maximum 10 secondes. 
+    La fonction \textbf{get$\_$flag} prend une photo qu'elle analyse de la manière décrite dans la section \ref{get_flag} et en déduit un drapeau. 
+    Au cas où le drapeau détecté n'est pas défini, elle continue de s'exécuter en boucle jusqu'à obtenir un drapeau connu pendant au maximum 10 secondes. 
     Passé ce délai, le robot retourne dans l'état \textcolor{bleu}{WAIT}. \\ \par
     
-    Lorsqu'un drapeau connu est enfin trouvé, le thread \colorbox{yellow}{\textbf{ManagesStates}} appelle la fonction \textbf{restart$\_$dance} qui réveille le thread \colorbox{yellow}{\textbf{Dance}} (\textcolor{red}{flèche en rouge}). 
+    Lorsqu'un drapeau connu est trouvé, le thread \colorbox{yellow}{\textbf{ManagesStates}} appelle la fonction \textbf{restart$\_$dance} qui réveille le thread \colorbox{yellow}{\textbf{Dance}} (\textcolor{red}{flèche en rouge}). 
     En effet, la variable \textcolor{bleu}{is$\_$dancing} est initialisée à \textit{false} et inhibe le thread en le faisant simplement dormir dans une boucle de 100 ms. 
-    Lorsqu'elle passe à \textit{true}, celui-ci sort de son sommeil et commence à jouer la musique \textcolor{bleu}{current$\_$song} (changée à la musique du pays détecté par \textbf{restart$\_$dance} grâce à une look up table). 
+    Lorsqu'elle passe à \textit{true}, celui-ci sort de son sommeil et commence à jouer la musique \textcolor{bleu}{current$\_$song}.
+    Cette dernière est changée à la musique du pays détecté par \textbf{restart$\_$dance} grâce à une look up table. 
     A chaque note jouée, les fonctions \textbf{change$\_$figure} et \textbf{dac$\_$play} sont appelée pour changer de mouvement de dance en activant de façon aléatoire les moteurs et jouer le son voulu, respectivement. 
     De plus, la variable \textcolor{bleu}{music$\_$position} indiquant quelle note et rythme jouer de la structure \textcolor{bleu}{Music} est incrémentée. \\ \par
     
-    A chaque appel de \colorbox{yellow}{\textbf{ManagesStates}}, \textbf{obstacle$\_$detected} est appelé pour vérifier qu'aucun obstacle n'obstrue le chemin du robot lorsqu'il danse. 
-    Si tel est le cas, le robot passe en mode \textcolor{bleu}{PAUSE}, ce qui a pour conséquence d'inhiber le thread \colorbox{yellow}{\textbf{Dance}} en le faisant retourner dans sa boucle de sommeil de 100 ms (\textcolor{violet}{flèche en violet}). 
-    Une fois l'obstacle enlevé, le robot continue sa danse en reprenant là où il s'était arrêté. Notons que l'état \textcolor{bleu}{PAUSE} n'affecte nullement la détection de drapeau car lorsque que le robot est dans l'état \textcolor{bleu}{FLAG$\_$DETECTION}, il ne peut pas en sortir pendant 10 secondes, à moins de détecter un drapeau.
-    Ceci est complètement maîtrisé, lorsque le robot est en train de détecter le drapeau, il ne doit faire que cela; c'est pourquoi le thread \colorbox{yellow}{\textbf{ManagesStates}} ne rend la main à aucun moment durant ce laps de temps.
+    A chaque appel de \state, \textbf{obstacle\_detected} est appelé pour vérifier qu'aucun obstacle n'obstrue le chemin du robot lorsqu'il danse. 
+    Si tel est le cas, le robot passe en mode \textcolor{bleu}{PAUSE}, ce qui a pour conséquence d'inhiber le thread \dance en le faisant retourner dans sa boucle de sommeil de 100 ms (\textcolor{violet}{flèche en violet}). 
+    Une fois l'obstacle enlevé, le robot continue sa danse en reprenant là où il s'était arrêté. 
+    À noter que la détection d'obstacle n'affecte nullement la détection de drapeau car les fonctions gérants ces deux tâches sont appelées depuis le même thread, soit \state.
+    Elles se bloquent donc mutuellement.
+    Ceci est complètement maîtrisé.
+    Lorsque le robot est en train de détecter le drapeau, il ne doit faire que cela.
 
-    \subsection{La fonction extract$\_$color$\_$bands}
+    \subsection{La fonction get\_flag}
+    \label{get_flag}
+    
+    \begin{figure}[!ht]
+        \noindent\makebox[\textwidth]{\includegraphics[scale=0.6]{docs/rapport/images/get_flag.pdf}}
+        \caption{Schéma de la fonction \textbf{get\_flag}.}
+        \label{fig:get_flag} % Pour référer à cette figure dans le texte
+    \end{figure}
+    
+    A chaque appel de \textbf{get\_flag}, une ligne horizontale de la dernière image capturée par la caméra est stockée dans la variable \textcolor{bleu}{pixel\_line}. 
+    La fonction \textbf{get\_color} convertit chaque pixel de cette dernière variable en une couleur: \textit{WHITE, RED, GREEN, BLUE, UNDEFINED\_COLOR}, puis les stocke dans \textcolor{bleu}{color\_line}, un array de type \textit{Color}. 
+    Le fonctionnement de \textbf{get\_color} est décrit plus en détail dans la section \ref{améliorer_couleur}. 
+    La fonction \textbf{extract\_color\_bands} décrite dans la section \ref{extract_color_bands} analyse ce vecteur en extrayant les bandes de couleurs correspondant au drapeau puis les stocke dans \textcolor{bleu}{color\_bands}. 
+    Finalement, \textbf{extract\_flag} analyse ces bandes et en déduit le drapeau correspondant.
+    
+    \subsection{La fonction extract\_color\_bands}
     \label{extract_color_bands}
-    Voici une explication de la fonction \textbf{extract$\_$color$\_$bands} qui est au coeur de l'analyse de l'image pour la détection du drapeau. Elle permet entre autre de s'affranchir du bruit de la caméra et autres imperfections liée à la détection des couleurs.
-    \label{color_line_step1}
-    \begin{figure}[!h] %{\textwidth}
+    \begin{figure}[!ht] %{\textwidth}
         \begin{center}
             \begin{tikzpicture}[scale=0.3]
                 \foreach \i in {1,...,4}
@@ -137,8 +186,7 @@
 
     \vspace{5mm}
 
-    \label{color_line_step2}
-    \begin{figure}[!h] %{\textwidth}
+    \begin{figure}[!ht] %{\textwidth}
         \begin{center}
             \begin{tikzpicture}[scale=0.4]
                 \draw[fill=gray]  (0,3) rectangle (1,5) node[midway] (A) {};
@@ -169,8 +217,7 @@
 
     \vspace{5mm}
 
-    \label{color_line_step3}
-    \begin{figure}[!h] %{\textwidth}
+    \begin{figure}[!ht] %{\textwidth}
         \begin{center}
             \begin{tikzpicture}[scale=0.4]
                 \draw[fill=gray]  (0,3) rectangle (1,5) node[midway] (A) {};
@@ -196,8 +243,7 @@
 
     \vspace{5mm}
 
-    \label{color_line_step4}
-    \begin{figure}[!h] %{\textwidth}
+    \begin{figure}[!ht] %{\textwidth}
         \begin{center}
             \begin{tikzpicture}[scale=0.4]
                 \draw[fill=gray]  (0,3) rectangle (1,5) node[midway] (A) {};
@@ -221,8 +267,7 @@
 
     \vspace{5mm}
     
-    \label{color_line_step4}
-    \begin{figure}[!h] %{\textwidth}
+    \begin{figure}[!ht] %{\textwidth}
         \begin{center}
             \begin{tikzpicture}[scale=0.4]
                 \draw[fill=gray]  (0,3) rectangle (1,5) node[midway] (A) {};
@@ -246,8 +291,7 @@
 
     \vspace{5mm}
 
-    \label{color_line_step5}
-    \begin{figure}[!h] %{\textwidth}
+    \begin{figure}[!ht] %{\textwidth}
         \begin{center}
             \begin{tikzpicture}[scale=0.4]
                 \draw[fill=gray]  (0,3) rectangle (1,5) node[midway] (A) {};
@@ -263,59 +307,58 @@
 
     \section{Problèmes apparus lors du projet}
     
-    \label{problème_couleurs}
     \subsection{Détecter la bonne couleur de pixel}
+    \label{problème_couleurs}
     Lors des premiers tests que nous avons effectués avec la caméra, nous utilisions des drapeaux imprimés sur papier. 
     A cause des reflets et du changement de luminosité, il était quasiment impossible de paramétrer la détection de couleur pour qu'elle fonctionne à tous les coups, c'est pourquoi nous utilisons maintenant un écran comme support pour les drapeaux.
     
     \subsection{Détacher les notes de musiques qui se répètent}
     Lors des premiers tests musicaux, nous avons remarqué que le robot ne détachait pas 2 notes identiques consécutives. Nous avons dû donc modifier le thread \colorbox{yellow}{\textbf{Dance}} pour qu'il arrête de jouer une note quelques millisecondes avant de jouer la suivante sans toutefois s'arrêter de danser. Cependant, un problème subsistait: lorsque la musique était finie ou bien lorsqu'une note très rapide devait être jouée, le programme plantait. En effet, le robot devait s'arrêter de jouer la note avant même de l'avoir commencée. Nous avons dû donc ajouter une condition à ce détachement de note, qui fonctionne maintenant très bien sans poser de problème.
     
-    \subsection{Créer une fonction qui retourne un array}
-    La fonction \textbf{extract$\_$color$\_$bands} expliquée dans la section \ref{extract_color_bands} doit retourner un array de \textit{Color}. En C++, il suffit de passer l'argument en référence puis de le modifier dans la fonction, mais cela n'est pas possible en C. C'est pourquoi nous avons dû faire usage de pointeur pour corriger cela.
-    
+    \subsection{Optimiser l'accès en mémoire des musiques}
+    Initialement, lorsque nous avions besoin d'accéder à un morceau pour le stocker dans la variable \textcolor{bleu}{current\_song} à l'appel de \textbf{restart\_dance}, nous faisions appel à une fonction qui calcule chaque composante du morceau puis le recopie dans \textcolor{bleu}{current\_song}. 
+    Ce n'était pas optimal car lorsque l'on présente plusieurs fois le même drapeau, le robot va recalculer le même morceau à chaque fois, ce qui est une grosse perte de temps. 
+    De façon similaire à la fonction sinus, nous avons ainsi créé une fonction \textbf{init\_songs} qui initialise chaque musique au début du programme et les stocke dans des variables de types \textit{Music}, comme expliqué lors du cours 4. \cite{sinus}
+   
     \section{Points à améliorer}
     Il y a plusieurs points à améliorer afin d'optimiser notre programme si nous avions eu plus de temps.
 
-%pas convaincu de cette partie. Il est expliqué plus haut que cette décision était intentionnelle et réfléchie car un assistant nous avait justement dit que c'était mieux de limiter le nombre de threads au maximum
     \subsection{Créer un thread propre pour la détection d'obstacles}
-    Dans l'état actuel des choses le robot vérifie l'absence d'obstacles en appellant une fonction au début du thread qui gère les inputs et les états.
+    Dans l'état actuel des choses le robot vérifie l'absence d'obstacles en appellant la  fonction au début du thread \colorbox{yellow}{\textbf{ManagesStates}}.
     Par conséquent, un obstacle peut se présenter après cet appel, lorsque le robot est occupé par d'autres tâches, sans causer un arrêt d'activité.
     Cela se produit par exemple pendant la détection des drapeaux où le robot est bloqué dans une boucle.
 
-    L'ajout d'une thread complètement dédiée à la détection d'obstacle permettrait d'y réagir à chaque instant.
+    L'ajout d'un thread complètement dédié à la détection d'obstacle permettrait d'y réagir à chaque instant, ce qui pourrait être utile.
     En revanche cela impliquerait aussi une nécessité de faire communiquer cette thread avec les autres, c'est à dire introduire plus de variables globales.
-    La raison pour laquelle cela n'est pas encore fait est une manque de temps et la réorganisation du code nécessaire.
+    Un autre problème est qu'un nombre plus important de threads nécessiterait un ordonnancement plus complexe par le système d'exploitation, ce qui rend plus difficile de garantir que tous les threads ont suffisamment de temps pour son exécution.
+    De plus cela rendrait l'exécution plus lent à cause d'un nombre plus élevé de changement de thread.
+    À cause de la taille faible de ce projet, les deux derniers problèmes mentionnés ne serait pas encombrants.
+    
+    Cette proposition n'est pas une amélioration dans la vraie sens, mais plutôt une variation.
+    Elle éviterait un probléme, mais en engendrerait d'autres.
+    Comme on considère les problèmes alternatifs plus grands que ceux présents, on a choisi de ne pas implémenter l'alternative.
 
-%celle-ci non plus. Je trouve que la détection de couleur se fait très bien en toute condition dès lors que nous utilisons un écran. J'ai ajouté une section qui détaille ce point dans "problèmes apparus lors du projet".
     \subsection{Rendre la détection de couleurs plus fiable}
+    \label{améliorer_couleur}
     La caméra du robot fournit une image de 640 fois 480 pixels sous le format RGB565.
     Cela signifie que l'intensité de rouge, vert et bleu sont représentés sur 5, 6 et 5 pixels respectivement.
-    Afin de déterminer la couleur représentée, les écarts entre ces trois valeurs sont analysées.
+    Afin de déterminer la couleur représentée, les écarts entre ces trois valeurs sont analysées par la fonction \textbf{get\_color}.
     Par exemple, si R est plus grand que G et B d'une certaine valeur, le robot en déduit que le pixel est de couleur rouge.
     La détection du vert et du bleu se fait de façon similaire.
     Si les 3 couleurs sont présentes sur le pixel, le robot en déduit qu'il est blanc.
+    % Sous supposition que les valeurs RGB sont représentées sur la même échelle, c'est à dire le même nombre de bits, le pourcentage dont une valeur dépasse les autres pourrait être analysé par exemple. 
     
-    Le problème de cette démarche est que les valeurs RGB sont dépendantes de la luminosité qui n'est pas forcément constante.
-    Le robot pourrait donc être capable de détecter très bien une couleur dans certaines conditions, mais se tromper complètement si celles-ci devaient changer.
-    Sous supposition que les valeurs RGB sont représentées sur la même échelle, c'est à dire le même nombre de bits, le pourcentage dont une valeur dépasse les autres pourrait être analysé par exemple. 
+    Comme expliqué dans la section \ref{problème_couleurs}, cette méthode fonctionne très bien avec un écran mais elle fonctionne très mal avec d'autres supports tel que le papier. Nous pourrions améliorer cela en ajoutant d'autres conditions plus précises pour la détection d'une couleur.
     
     \subsection{Optimiser l'utilisation de mémoire des pièces de musique}
-    Tous les morceaux de notre robot sont stockés dans une propre instance d'une structure appelée \texttt{Music} mesurant $55 \cdot 4 = 220$ bytes. 
+    Tous les morceaux de notre robot sont stockés dans une structure de taille fixe appelée \texttt{Music} mesurant $55 \cdot 4 = 220$ bytes. 
     Si nous avions décidé de créer un morceau beaucoup plus long que les autres, nous aurions été obligés d'augmenter la taille en mémoire de cette structure, et ainsi de tous les autres morceaux aussi, ce qui n'est pas optimal. 
     Une manière de corriger le problème aurait été de faire de l'allocation dynamique de mémoire plutôt que d'utiliser une structure fixe. 
     Malheureusement, ceci est assez difficile en C. 
-    Nous aurions aussi pu utiliser des pointeurs mais ils peuvent créer des fuites de mémoires à moins qu'ils ne soient pas très bien gérés. 
+    Nous aurions aussi pu utiliser des pointeurs mais ils peuvent créer des fuites de mémoires s'ils ne sont pas correctement gérés. 
     Nous avons opté sur l'utilisation d'arrays, une solution plus simple mais moins efficace.
     
-    \subsection{Morceaux de musique calculés durant la compilation}
-    Comme indiqué précédemment le robot a besoin d'une structure \texttt{Music} mesurant 220 bytes pour danser, et le contenu de cette structure varie selon le drapeau détecté.
-    De sorte d'y pouvoir accéder dans le thread gérant la danse, la fonction \texttt{LUT\_flag\_to\_country()} a été programmé.
-    Celle-ci prend le drapeau comme argument et appelle une fonction propre à chaque drapeau qui retourne le bon \texttt{Music}.
-    Le \texttt{Music} est ensuite retourné par \texttt{LUT\_flag\_to\_country()}.
     
-    Le problème est que les fonctions propre à chacun des drapeaux calculent le contenu du \texttt{Music} à tout appel bien qu'il soit constant.
-    Par exemple le même \texttt{Music} est retourné chaque fois que le drapeau de la Suisse est détecté.
     
     
     \subsection{Autres points mineurs}
@@ -330,6 +373,5 @@
         \item Plus de pays pourraient être ajoutés si la mémoire le permet.
     \end{enumerate}
     
-    
-
+    \printbibliography
 \end{document}
