@@ -1,0 +1,429 @@
+ARM GAS  /tmp/ccJDMPNu.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.eabi_attribute 27, 1
+   3              		.eabi_attribute 28, 1
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 2
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.file	"e_init_port.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.section	.rodata.e_init_port.cst4,"aM",%progbits,4
+  18              		.align	2
+  19              	.LC0:
+  20 0000 00000000 		.word	__stack_chk_guard
+  21              		.section	.text.e_init_port,"ax",%progbits
+  22              		.align	1
+  23              		.p2align 4,,15
+  24              		.global	e_init_port
+  25              		.arch armv7e-m
+  26              		.syntax unified
+  27              		.thumb
+  28              		.thumb_func
+  29              		.fpu fpv4-sp-d16
+  30              		.type	e_init_port, %function
+  31              	e_init_port:
+  32              	.LFB0:
+  33              		.file 1 ".//src/epuck1x/motor_led/e_init_port.c"
+  34              		.loc 1 39 24 view -0
+  35              		.cfi_startproc
+  36              		@ args = 0, pretend = 0, frame = 8
+  37              		@ frame_needed = 0, uses_anonymous_args = 0
+  38 0000 00B5     		push	{lr}
+  39              		.cfi_def_cfa_offset 4
+  40              		.cfi_offset 14, -4
+  41 0002 084B     		ldr	r3, .L6
+  42 0004 83B0     		sub	sp, sp, #12
+  43              		.cfi_def_cfa_offset 16
+  44              		.loc 1 39 24 is_stmt 0 view .LVU1
+  45 0006 1B68     		ldr	r3, [r3]
+  46 0008 0193     		str	r3, [sp, #4]
+  47 000a 4FF00003 		mov	r3,#0
+  48              		.loc 1 40 2 is_stmt 1 view .LVU2
+  49              		.loc 1 41 1 is_stmt 0 view .LVU3
+  50 000e 054B     		ldr	r3, .L6
+  51 0010 1A68     		ldr	r2, [r3]
+  52 0012 019B     		ldr	r3, [sp, #4]
+  53 0014 5A40     		eors	r2, r3, r2
+  54 0016 02D1     		bne	.L5
+  55 0018 03B0     		add	sp, sp, #12
+  56              		.cfi_remember_state
+  57              		.cfi_def_cfa_offset 4
+ARM GAS  /tmp/ccJDMPNu.s 			page 2
+
+
+  58              		@ sp needed
+  59 001a 5DF804FB 		ldr	pc, [sp], #4
+  60              	.L5:
+  61              		.cfi_restore_state
+  62 001e FFF7FEFF 		bl	__stack_chk_fail
+  63              	.LVL0:
+  64              	.L7:
+  65 0022 00BF     		.align	2
+  66              	.L6:
+  67 0024 00000000 		.word	.LC0
+  68              		.cfi_endproc
+  69              	.LFE0:
+  70              		.size	e_init_port, .-e_init_port
+  71              		.section	.rodata.isEpuckVersion1_3.cst4,"aM",%progbits,4
+  72              		.align	2
+  73              	.LC1:
+  74 0000 00000000 		.word	__stack_chk_guard
+  75              		.section	.text.isEpuckVersion1_3,"ax",%progbits
+  76              		.align	1
+  77              		.p2align 4,,15
+  78              		.global	isEpuckVersion1_3
+  79              		.syntax unified
+  80              		.thumb
+  81              		.thumb_func
+  82              		.fpu fpv4-sp-d16
+  83              		.type	isEpuckVersion1_3, %function
+  84              	isEpuckVersion1_3:
+  85              	.LFB1:
+  86              		.loc 1 43 39 is_stmt 1 view -0
+  87              		.cfi_startproc
+  88              		@ args = 0, pretend = 0, frame = 8
+  89              		@ frame_needed = 0, uses_anonymous_args = 0
+  90 0000 00B5     		push	{lr}
+  91              		.cfi_def_cfa_offset 4
+  92              		.cfi_offset 14, -4
+  93 0002 084B     		ldr	r3, .L12
+  94 0004 83B0     		sub	sp, sp, #12
+  95              		.cfi_def_cfa_offset 16
+  96              		.loc 1 43 39 is_stmt 0 view .LVU5
+  97 0006 1B68     		ldr	r3, [r3]
+  98 0008 0193     		str	r3, [sp, #4]
+  99 000a 4FF00003 		mov	r3,#0
+ 100              		.loc 1 44 5 is_stmt 1 view .LVU6
+ 101              		.loc 1 45 1 is_stmt 0 view .LVU7
+ 102 000e 054B     		ldr	r3, .L12
+ 103 0010 1A68     		ldr	r2, [r3]
+ 104 0012 019B     		ldr	r3, [sp, #4]
+ 105 0014 5A40     		eors	r2, r3, r2
+ 106 0016 03D1     		bne	.L11
+ 107 0018 0120     		movs	r0, #1
+ 108 001a 03B0     		add	sp, sp, #12
+ 109              		.cfi_remember_state
+ 110              		.cfi_def_cfa_offset 4
+ 111              		@ sp needed
+ 112 001c 5DF804FB 		ldr	pc, [sp], #4
+ 113              	.L11:
+ 114              		.cfi_restore_state
+ARM GAS  /tmp/ccJDMPNu.s 			page 3
+
+
+ 115 0020 FFF7FEFF 		bl	__stack_chk_fail
+ 116              	.LVL1:
+ 117              	.L13:
+ 118              		.align	2
+ 119              	.L12:
+ 120 0024 00000000 		.word	.LC1
+ 121              		.cfi_endproc
+ 122              	.LFE1:
+ 123              		.size	isEpuckVersion1_3, .-isEpuckVersion1_3
+ 124              		.text
+ 125              	.Letext0:
+ 126              		.section	.debug_info,"",%progbits
+ 127              	.Ldebug_info0:
+ 128 0000 76000000 		.4byte	0x76
+ 129 0004 0400     		.2byte	0x4
+ 130 0006 00000000 		.4byte	.Ldebug_abbrev0
+ 131 000a 04       		.byte	0x4
+ 132 000b 01       		.uleb128 0x1
+ 133 000c 73000000 		.4byte	.LASF0
+ 134 0010 0C       		.byte	0xc
+ 135 0011 C5010000 		.4byte	.LASF1
+ 136 0015 00000000 		.4byte	.LASF2
+ 137 0019 00000000 		.4byte	.Ldebug_ranges0+0
+ 138 001d 00000000 		.4byte	0
+ 139 0021 00000000 		.4byte	.Ldebug_line0
+ 140 0025 02       		.uleb128 0x2
+ 141 0026 EC010000 		.4byte	.LASF3
+ 142 002a 01       		.byte	0x1
+ 143 002b 2B       		.byte	0x2b
+ 144 002c 0F       		.byte	0xf
+ 145 002d 49000000 		.4byte	0x49
+ 146 0031 00000000 		.4byte	.LFB1
+ 147 0035 28000000 		.4byte	.LFE1-.LFB1
+ 148 0039 01       		.uleb128 0x1
+ 149 003a 9C       		.byte	0x9c
+ 150 003b 49000000 		.4byte	0x49
+ 151 003f 03       		.uleb128 0x3
+ 152 0040 24000000 		.4byte	.LVL1
+ 153 0044 70000000 		.4byte	0x70
+ 154 0048 00       		.byte	0
+ 155 0049 04       		.uleb128 0x4
+ 156 004a 01       		.byte	0x1
+ 157 004b 08       		.byte	0x8
+ 158 004c 48000000 		.4byte	.LASF4
+ 159 0050 05       		.uleb128 0x5
+ 160 0051 56000000 		.4byte	.LASF5
+ 161 0055 01       		.byte	0x1
+ 162 0056 27       		.byte	0x27
+ 163 0057 06       		.byte	0x6
+ 164 0058 00000000 		.4byte	.LFB0
+ 165 005c 28000000 		.4byte	.LFE0-.LFB0
+ 166 0060 01       		.uleb128 0x1
+ 167 0061 9C       		.byte	0x9c
+ 168 0062 70000000 		.4byte	0x70
+ 169 0066 03       		.uleb128 0x3
+ 170 0067 22000000 		.4byte	.LVL0
+ 171 006b 70000000 		.4byte	0x70
+ARM GAS  /tmp/ccJDMPNu.s 			page 4
+
+
+ 172 006f 00       		.byte	0
+ 173 0070 06       		.uleb128 0x6
+ 174 0071 62000000 		.4byte	.LASF6
+ 175 0075 62000000 		.4byte	.LASF6
+ 176 0079 00       		.byte	0
+ 177              		.section	.debug_abbrev,"",%progbits
+ 178              	.Ldebug_abbrev0:
+ 179 0000 01       		.uleb128 0x1
+ 180 0001 11       		.uleb128 0x11
+ 181 0002 01       		.byte	0x1
+ 182 0003 25       		.uleb128 0x25
+ 183 0004 0E       		.uleb128 0xe
+ 184 0005 13       		.uleb128 0x13
+ 185 0006 0B       		.uleb128 0xb
+ 186 0007 03       		.uleb128 0x3
+ 187 0008 0E       		.uleb128 0xe
+ 188 0009 1B       		.uleb128 0x1b
+ 189 000a 0E       		.uleb128 0xe
+ 190 000b 55       		.uleb128 0x55
+ 191 000c 17       		.uleb128 0x17
+ 192 000d 11       		.uleb128 0x11
+ 193 000e 01       		.uleb128 0x1
+ 194 000f 10       		.uleb128 0x10
+ 195 0010 17       		.uleb128 0x17
+ 196 0011 00       		.byte	0
+ 197 0012 00       		.byte	0
+ 198 0013 02       		.uleb128 0x2
+ 199 0014 2E       		.uleb128 0x2e
+ 200 0015 01       		.byte	0x1
+ 201 0016 3F       		.uleb128 0x3f
+ 202 0017 19       		.uleb128 0x19
+ 203 0018 03       		.uleb128 0x3
+ 204 0019 0E       		.uleb128 0xe
+ 205 001a 3A       		.uleb128 0x3a
+ 206 001b 0B       		.uleb128 0xb
+ 207 001c 3B       		.uleb128 0x3b
+ 208 001d 0B       		.uleb128 0xb
+ 209 001e 39       		.uleb128 0x39
+ 210 001f 0B       		.uleb128 0xb
+ 211 0020 27       		.uleb128 0x27
+ 212 0021 19       		.uleb128 0x19
+ 213 0022 49       		.uleb128 0x49
+ 214 0023 13       		.uleb128 0x13
+ 215 0024 11       		.uleb128 0x11
+ 216 0025 01       		.uleb128 0x1
+ 217 0026 12       		.uleb128 0x12
+ 218 0027 06       		.uleb128 0x6
+ 219 0028 40       		.uleb128 0x40
+ 220 0029 18       		.uleb128 0x18
+ 221 002a 9742     		.uleb128 0x2117
+ 222 002c 19       		.uleb128 0x19
+ 223 002d 01       		.uleb128 0x1
+ 224 002e 13       		.uleb128 0x13
+ 225 002f 00       		.byte	0
+ 226 0030 00       		.byte	0
+ 227 0031 03       		.uleb128 0x3
+ 228 0032 898201   		.uleb128 0x4109
+ARM GAS  /tmp/ccJDMPNu.s 			page 5
+
+
+ 229 0035 00       		.byte	0
+ 230 0036 11       		.uleb128 0x11
+ 231 0037 01       		.uleb128 0x1
+ 232 0038 31       		.uleb128 0x31
+ 233 0039 13       		.uleb128 0x13
+ 234 003a 00       		.byte	0
+ 235 003b 00       		.byte	0
+ 236 003c 04       		.uleb128 0x4
+ 237 003d 24       		.uleb128 0x24
+ 238 003e 00       		.byte	0
+ 239 003f 0B       		.uleb128 0xb
+ 240 0040 0B       		.uleb128 0xb
+ 241 0041 3E       		.uleb128 0x3e
+ 242 0042 0B       		.uleb128 0xb
+ 243 0043 03       		.uleb128 0x3
+ 244 0044 0E       		.uleb128 0xe
+ 245 0045 00       		.byte	0
+ 246 0046 00       		.byte	0
+ 247 0047 05       		.uleb128 0x5
+ 248 0048 2E       		.uleb128 0x2e
+ 249 0049 01       		.byte	0x1
+ 250 004a 3F       		.uleb128 0x3f
+ 251 004b 19       		.uleb128 0x19
+ 252 004c 03       		.uleb128 0x3
+ 253 004d 0E       		.uleb128 0xe
+ 254 004e 3A       		.uleb128 0x3a
+ 255 004f 0B       		.uleb128 0xb
+ 256 0050 3B       		.uleb128 0x3b
+ 257 0051 0B       		.uleb128 0xb
+ 258 0052 39       		.uleb128 0x39
+ 259 0053 0B       		.uleb128 0xb
+ 260 0054 27       		.uleb128 0x27
+ 261 0055 19       		.uleb128 0x19
+ 262 0056 11       		.uleb128 0x11
+ 263 0057 01       		.uleb128 0x1
+ 264 0058 12       		.uleb128 0x12
+ 265 0059 06       		.uleb128 0x6
+ 266 005a 40       		.uleb128 0x40
+ 267 005b 18       		.uleb128 0x18
+ 268 005c 9742     		.uleb128 0x2117
+ 269 005e 19       		.uleb128 0x19
+ 270 005f 01       		.uleb128 0x1
+ 271 0060 13       		.uleb128 0x13
+ 272 0061 00       		.byte	0
+ 273 0062 00       		.byte	0
+ 274 0063 06       		.uleb128 0x6
+ 275 0064 2E       		.uleb128 0x2e
+ 276 0065 00       		.byte	0
+ 277 0066 3F       		.uleb128 0x3f
+ 278 0067 19       		.uleb128 0x19
+ 279 0068 3C       		.uleb128 0x3c
+ 280 0069 19       		.uleb128 0x19
+ 281 006a 6E       		.uleb128 0x6e
+ 282 006b 0E       		.uleb128 0xe
+ 283 006c 03       		.uleb128 0x3
+ 284 006d 0E       		.uleb128 0xe
+ 285 006e 00       		.byte	0
+ARM GAS  /tmp/ccJDMPNu.s 			page 6
+
+
+ 286 006f 00       		.byte	0
+ 287 0070 00       		.byte	0
+ 288              		.section	.debug_aranges,"",%progbits
+ 289 0000 24000000 		.4byte	0x24
+ 290 0004 0200     		.2byte	0x2
+ 291 0006 00000000 		.4byte	.Ldebug_info0
+ 292 000a 04       		.byte	0x4
+ 293 000b 00       		.byte	0
+ 294 000c 0000     		.2byte	0
+ 295 000e 0000     		.2byte	0
+ 296 0010 00000000 		.4byte	.LFB0
+ 297 0014 28000000 		.4byte	.LFE0-.LFB0
+ 298 0018 00000000 		.4byte	.LFB1
+ 299 001c 28000000 		.4byte	.LFE1-.LFB1
+ 300 0020 00000000 		.4byte	0
+ 301 0024 00000000 		.4byte	0
+ 302              		.section	.debug_ranges,"",%progbits
+ 303              	.Ldebug_ranges0:
+ 304 0000 00000000 		.4byte	.LFB0
+ 305 0004 28000000 		.4byte	.LFE0
+ 306 0008 00000000 		.4byte	.LFB1
+ 307 000c 28000000 		.4byte	.LFE1
+ 308 0010 00000000 		.4byte	0
+ 309 0014 00000000 		.4byte	0
+ 310              		.section	.debug_line,"",%progbits
+ 311              	.Ldebug_line0:
+ 312 0000 79000000 		.section	.debug_str,"MS",%progbits,1
+ 312      03003D00 
+ 312      00000201 
+ 312      FB0E0D00 
+ 312      01010101 
+ 313              	.LASF2:
+ 314 0000 2F686F6D 		.ascii	"/home/olof/Documents/MICRO-315/micro-315/tp4/lib/e-"
+ 314      652F6F6C 
+ 314      6F662F44 
+ 314      6F63756D 
+ 314      656E7473 
+ 315 0033 7075636B 		.ascii	"puck2_main-processor\000"
+ 315      325F6D61 
+ 315      696E2D70 
+ 315      726F6365 
+ 315      73736F72 
+ 316              	.LASF4:
+ 317 0048 756E7369 		.ascii	"unsigned char\000"
+ 317      676E6564 
+ 317      20636861 
+ 317      7200
+ 318              	.LASF5:
+ 319 0056 655F696E 		.ascii	"e_init_port\000"
+ 319      69745F70 
+ 319      6F727400 
+ 320              	.LASF6:
+ 321 0062 5F5F7374 		.ascii	"__stack_chk_fail\000"
+ 321      61636B5F 
+ 321      63686B5F 
+ 321      6661696C 
+ 321      00
+ARM GAS  /tmp/ccJDMPNu.s 			page 7
+
+
+ 322              	.LASF0:
+ 323 0073 474E5520 		.ascii	"GNU C17 9.2.1 20191025 (release) [ARM/arm-9-branch "
+ 323      43313720 
+ 323      392E322E 
+ 323      31203230 
+ 323      31393130 
+ 324 00a6 72657669 		.ascii	"revision 277599] -mcpu=cortex-m4 -mfloat-abi=hard -"
+ 324      73696F6E 
+ 324      20323737 
+ 324      3539395D 
+ 324      202D6D63 
+ 325 00d9 6D667075 		.ascii	"mfpu=fpv4-sp-d16 -mno-thumb-interwork -mthumb -marc"
+ 325      3D667076 
+ 325      342D7370 
+ 325      2D643136 
+ 325      202D6D6E 
+ 326 010c 683D6172 		.ascii	"h=armv7e-m+fp -ggdb -O2 -fomit-frame-pointer -falig"
+ 326      6D763765 
+ 326      2D6D2B66 
+ 326      70202D67 
+ 326      67646220 
+ 327 013f 6E2D6675 		.ascii	"n-functions=16 -fno-strict-aliasing -fstack-protect"
+ 327      6E637469 
+ 327      6F6E733D 
+ 327      3136202D 
+ 327      666E6F2D 
+ 328 0172 6F722D61 		.ascii	"or-all -ffunction-sections -fdata-sections -fno-com"
+ 328      6C6C202D 
+ 328      6666756E 
+ 328      6374696F 
+ 328      6E2D7365 
+ 329 01a5 6D6F6E20 		.ascii	"mon -fsingle-precision-constant\000"
+ 329      2D667369 
+ 329      6E676C65 
+ 329      2D707265 
+ 329      63697369 
+ 330              	.LASF1:
+ 331 01c5 2E2F2F73 		.ascii	".//src/epuck1x/motor_led/e_init_port.c\000"
+ 331      72632F65 
+ 331      7075636B 
+ 331      31782F6D 
+ 331      6F746F72 
+ 332              	.LASF3:
+ 333 01ec 69734570 		.ascii	"isEpuckVersion1_3\000"
+ 333      75636B56 
+ 333      65727369 
+ 333      6F6E315F 
+ 333      3300
+ 334              		.ident	"GCC: (15:9-2019-q4-0ubuntu1) 9.2.1 20191025 (release) [ARM/arm-9-branch revision 277599]"
+ARM GAS  /tmp/ccJDMPNu.s 			page 8
+
+
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 e_init_port.c
+     /tmp/ccJDMPNu.s:18     .rodata.e_init_port.cst4:0000000000000000 $d
+     /tmp/ccJDMPNu.s:22     .text.e_init_port:0000000000000000 $t
+     /tmp/ccJDMPNu.s:31     .text.e_init_port:0000000000000000 e_init_port
+     /tmp/ccJDMPNu.s:67     .text.e_init_port:0000000000000024 $d
+     /tmp/ccJDMPNu.s:72     .rodata.isEpuckVersion1_3.cst4:0000000000000000 $d
+     /tmp/ccJDMPNu.s:76     .text.isEpuckVersion1_3:0000000000000000 $t
+     /tmp/ccJDMPNu.s:84     .text.isEpuckVersion1_3:0000000000000000 isEpuckVersion1_3
+     /tmp/ccJDMPNu.s:120    .text.isEpuckVersion1_3:0000000000000024 $d
+
+UNDEFINED SYMBOLS
+__stack_chk_guard
+__stack_chk_fail
