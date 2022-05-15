@@ -107,7 +107,7 @@
     L'utilisateur tourne le selecteur (peu importe de combien de cran). 
     La détection se fait en appellant la fonction \textbf{get$\_$selector} dans le thread \colorbox{yellow}{\textbf{ManagesStates}}, qui met ensuite l'état du robot à \textcolor{bleu}{FLAG$\_$DETECTION} ce qui a pour conséquence d'appeler la fonction \textbf{get$\_$flag} (\textcolor{vert}{flèche en vert}). \\ \par
     
-    La fonction \textbf{get$\_$flag} prend une photo qu'elle analyse de la manière décrite dans la section \ref{get_flag} et en déduit un drapeau. 
+    La fonction \textbf{get$\_$flag} analyse la dernière image capturée par la caméra puis en déduit le drapeau présenté, de la manière décrite dans la section \ref{get_flag}.
     Au cas où le drapeau détecté n'est pas défini, elle continue de s'exécuter en boucle jusqu'à obtenir un drapeau connu pendant au maximum 10 secondes. 
     Passé ce délai, le robot retourne dans l'état \textcolor{bleu}{WAIT}. \\ \par
     
